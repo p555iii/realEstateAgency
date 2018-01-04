@@ -22,6 +22,6 @@ public class TestServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("123");
+        System.out.println("1234");
     }
 }
