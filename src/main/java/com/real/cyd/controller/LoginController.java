@@ -13,6 +13,8 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.UUID;
 
+import static java.lang.System.*;
+
 /**
  * Create in INtelliJ IDEA
  * Author cyd
@@ -38,9 +40,10 @@ public class LoginController {
         user.setAge(12);
         userMapper.insertUser(user);
         for(User u:users){
-            System.out.println(u.toString());
+            out.println(u.toString());
         }
-        System.out.println("abcddsdsdseff");
+        out.println("abcddsdsdseff");
+        System.out.println(getenv().get("JAVA_HOME"));
         return "index";
     }
     @RequestMapping("/err")
