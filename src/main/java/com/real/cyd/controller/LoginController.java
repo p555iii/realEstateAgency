@@ -34,14 +34,14 @@ public class LoginController {
         model.addAttribute("abce","123");
         PageHelper.startPage(1,10);
         List<User> users = userMapper.userList();
-        User user = new User();
+       /* User user = new User();
         user.setId(UUID.randomUUID().toString());
         user.setName("zhangs");
         user.setAge(12);
         userMapper.insertUser(user);
         for(User u:users){
             out.println(u.toString());
-        }
+        }*/
         out.println("abcddsdsdseff");
         System.out.println(getenv().get("JAVA_HOME"));
         return "index";

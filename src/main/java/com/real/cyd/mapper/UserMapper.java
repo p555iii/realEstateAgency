@@ -18,7 +18,6 @@ public interface UserMapper {
     @Select("select * from user")
     public List<User> userList();
 
-    @Transactional
-    @Insert("insert into user values(#{id},#{name},#{age})")
+    @Insert("insert into user(userId,username,password,nickName) values(#{userId},#{userName},#{password},#{nickName})")
     public int insertUser(User user);
 }
