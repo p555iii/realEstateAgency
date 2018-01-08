@@ -1,23 +1,34 @@
 package com.real.cyd.mapper;
 
 import com.real.cyd.bean.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
+import com.real.cyd.bean.UserExample;
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
-/**
- * Create in INtelliJ IDEA
- * Author cyd
- * Date   2018/1/2
- */
-@Component
+@Repository
 public interface UserMapper {
-    @Select("select * from user")
-    public List<User> userList();
+    int countByExample(UserExample example);
 
-    @Insert("insert into user(userId,username,password,nickName) values(#{userId},#{userName},#{password},#{nickName})")
-    public int insertUser(User user);
+    int deleteByExample(UserExample example);
+
+    int deleteByPrimaryKey(String userid);
+
+    int insert(User record);
+
+    int insertSelective(User record);
+
+    List<User> selectByExample(UserExample example);
+
+    User selectByPrimaryKey(String userid);
+
+    int updateByExampleSelective(@Param("record") User record, @Param("example") UserExample example);
+
+    int updateByExample(@Param("record") User record, @Param("example") UserExample example);
+
+    int updateByPrimaryKeySelective(User record);
+
+    int updateByPrimaryKey(User record);
+
+    List<User> queryUserList();
 }

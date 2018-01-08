@@ -1,30 +1,28 @@
 package com.real.cyd.bean;
 
-/**
- * Create in INtelliJ IDEA
- * Author cyd
- * Date   2018/1/2
- */
 public class User {
-    private String userId;
-    private String userName;
+    private String userid;
+
+    private String username;
+
     private String password;
-    private String nickName;
 
-    public String getUserId() {
-        return userId;
+    private String nickname;
+
+    public String getUserid() {
+        return userid;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUserid(String userid) {
+        this.userid = userid == null ? null : userid.trim();
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username == null ? null : username.trim();
     }
 
     public String getPassword() {
@@ -32,14 +30,14 @@ public class User {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = password == null ? null : password.trim();
     }
 
-    public String getNickName() {
-        return nickName;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
+    public void setNickname(String nickname) {
+        this.nickname = nickname == null ? null : nickname.trim();
     }
 }

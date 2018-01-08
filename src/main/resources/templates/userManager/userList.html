@@ -8,9 +8,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"></meta>
     <link rel="stylesheet" href="../layui/css/layui.css"></link>
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+    <style type="text/css">
+        .layui-table-body .layui-table,.layui-table-header .layui-table{width: 100%;}
+        .layui-table-body.layui-table-main .layui-table-cell,.layui-table-header .layui-table-cell{white-space: pre-wrap;word-wrap: break-word; word-break: break-all; height: auto;}
+    </style>
 </head>
 <body>
-
+<div class="demoTable">
+    搜索ID：
+    <div class="layui-inline">
+        <input class="layui-input" name="id" id="demoReload" autocomplete="off">
+    </div>
+    <button class="layui-btn" data-type="reload">搜索</button>
+</div>
 <table class="layui-hide" id="test">
 
 </table>
@@ -35,10 +45,10 @@
 
             }
             ,cols: [[
-                {field:'userId', width:80, title: 'ID', sort: true}
-                ,{field:'userName', width:100, title: '用户名'}
-                ,{field:'password', width:80, title: '性别', sort: true}
-                ,{field:'nickName', width:80, title: '城市'}
+                {field:'userId',styles:'width:20%;', width:'10', title: 'ID'}
+                ,{field:'userName',styles:'width:40%;',  width:'auto', title: '用户名'}
+                ,{field:'password',styles:'width:20%;', width:'auto', title: '性别'}
+                ,{field:'nickName',styles:'width:20%;',  width:'auto', title: '城市'}
             ]]
 
         });

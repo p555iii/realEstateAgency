@@ -3,7 +3,6 @@ package com.real.cyd.controller;
 import com.github.pagehelper.PageHelper;
 import com.real.cyd.bean.User;
 import com.real.cyd.mapper.UserMapper;
-import groovy.lang.Sequence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.UUID;
 
 import static java.lang.System.*;
 
@@ -22,7 +20,7 @@ import static java.lang.System.*;
  */
 @Controller
 public class LoginController {
-    @Autowired
+    @Resource
     private UserMapper userMapper;
     @RequestMapping("/")
     public String index(Model model) {
@@ -33,7 +31,7 @@ public class LoginController {
         model.addAttribute("abcd","123");
         model.addAttribute("abce","123");
         PageHelper.startPage(1,10);
-        List<User> users = userMapper.userList();
+        List<User> users = userMapper.queryUserList();
        /* User user = new User();
         user.setId(UUID.randomUUID().toString());
         user.setName("zhangs");

@@ -16,25 +16,26 @@ public class UserServiceImpl implements UserService{
     private UserMapper userMapper;
 
     @Transactional
+    @Override
     public int insertUser(User user) {
         if(user == null){
             return 0;
         }
-        if(user.getUserId() == null || user.getUserId().equals("")){
-            user.setUserId(UUID.randomUUID().toString());
+        if(user.getUserid() == null || user.getUserid().equals("")){
+            user.setUserid(UUID.randomUUID().toString());
         }
-        return userMapper.insertUser(user);
+        return userMapper.insert(user);
     }
-
+    @Override
     public int updateUser(User user) {
         return 0;
     }
-
+    @Override
     public int deleteUser(User user) {
         return 0;
     }
-
+    @Override
     public List<User> queryUserList() {
-        return userMapper.userList();
+        return userMapper.queryUserList();
     }
 }
