@@ -11,6 +11,7 @@ public class RealEstateAgencyApplicationTests {
 
 	@Test
 	public void contextLoads() {
+		System.out.println("00000多少度");
 	}
 
 }

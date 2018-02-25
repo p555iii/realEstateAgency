@@ -1,22 +1,22 @@
 package com.real.cyd.bean;
 
 public class PageBean {
-    private int page;
-    private int limit;
+    private int pageNum;
+    private int pageSize;
 
-    public int getPage() {
-        return page;
+    public int getPageNum() {
+        return pageNum;
     }
 
-    public void setPage(int page) {
-        this.page = page;
+    public int getPageSize() {
+        return pageSize;
     }
 
-    public int getLimit() {
-        return limit;
+    public void setPageNum(int pageNum) {
+        this.pageNum = pageNum;
     }
 
-    public void setLimit(int limit) {
-        this.limit = limit;
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
     }
 }

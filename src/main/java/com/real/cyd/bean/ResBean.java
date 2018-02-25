@@ -2,32 +2,23 @@ package com.real.cyd.bean;
 
 import java.util.List;
 
-public class ResBean<E> {
-    private String code;
-    private int count;
-    private List<E> data;
+public class  ResBean<E> {
+    private int total;
+    private List<E> list;
 
-    public String getCode() {
-        return code;
+    public int getTotal() {
+        return total;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public List<E> getList() {
+        return list;
     }
 
-    public int getCount() {
-        return count;
+    public void setTotal(int total) {
+        this.total = total;
     }
 
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-    public List<E> getData() {
-        return data;
-    }
-
-    public void setData(List<E> data) {
-        this.data = data;
+    public void setList(List<E> list) {
+        this.list = list;
     }
 }

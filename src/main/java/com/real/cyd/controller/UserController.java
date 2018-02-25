@@ -1,9 +1,9 @@
+/*
 package com.real.cyd.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.real.cyd.bean.PageBean;
 import com.real.cyd.bean.ResBean;
-import com.real.cyd.bean.User;
 import com.real.cyd.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +19,7 @@ public class UserController {
     @Resource
     private UserService userService;
     @RequestMapping("/insert")
-    public void insertUser(User user){
+    public void insertUser(SysUser user){
         userService.insertUser(user);
     }
     @RequestMapping("/queryList")
@@ -39,4 +39,9 @@ public class UserController {
         res.setData(users);
         return res;
     }
+    @RequestMapping("/update")
+    public void updateUser(User user){
+        userService.updateUser(user);
+    }
 }
+*/

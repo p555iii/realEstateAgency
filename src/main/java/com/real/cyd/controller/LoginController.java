@@ -1,17 +1,14 @@
 package com.real.cyd.controller;
 
 import com.github.pagehelper.PageHelper;
-import com.real.cyd.bean.User;
-import com.real.cyd.mapper.UserMapper;
-import groovy.lang.Sequence;
+import com.real.cyd.bean.SysUser;
+import com.real.cyd.mapper.SysUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.annotation.Resource;
 import java.util.List;
-import java.util.UUID;
 
 import static java.lang.System.*;
 
@@ -23,7 +20,7 @@ import static java.lang.System.*;
 @Controller
 public class LoginController {
     @Autowired
-    private UserMapper userMapper;
+    private SysUserMapper userMapper;
     @RequestMapping("/")
     public String index(Model model) {
         // 加入一个属性，用来在模板中读取
@@ -33,7 +30,7 @@ public class LoginController {
         model.addAttribute("abcd","123");
         model.addAttribute("abce","123");
         PageHelper.startPage(1,10);
-        List<User> users = userMapper.userList();
+        List<SysUser> users = userMapper.userList();
        /* User user = new User();
         user.setId(UUID.randomUUID().toString());
         user.setName("zhangs");
@@ -43,6 +40,7 @@ public class LoginController {
             out.println(u.toString());
         }*/
         out.println("abcddsdsdseff");
+        System.out.println(users.get(0).getId());
         System.out.println(getenv().get("JAVA_HOME"));
         return "index";
     }
