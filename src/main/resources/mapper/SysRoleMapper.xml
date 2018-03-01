@@ -3,7 +3,18 @@
 <mapper namespace="com.real.cyd.mapper.SysRoleMapper" >
   <resultMap id="BaseResultMap" type="com.real.cyd.bean.SysRole" >
     <id column="id" property="id" jdbcType="VARCHAR" />
-    <result column="roleName" property="rolename" jdbcType="VARCHAR" />
+    <result column="roleName" property="roleName" jdbcType="VARCHAR" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="com.real.cyd.bean.SysPermission" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="resource_type" property="resourceType" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="permission" property="permission" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+    <result column="available" property="available" jdbcType="BIT" />
     <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -74,6 +85,86 @@
     from sys_role
     where id = #{id,jdbcType=VARCHAR}
   </select>
+    <select id="getRoleList" resultType="com.real.cyd.bean.SysRole" parameterType="com.real.cyd.bean.SysUser">
+      SELECT r.* FROM sys_role r,sys_user u,`sys_userrole` ur WHERE r.id = ur.role_id AND u.id = ur.user_id and u.username = #{username}
+    </select>
+  <select id="getRoleById" resultType="com.real.cyd.bean.SysRole" parameterType="com.real.cyd.bean.SysUser">
+    SELECT r.* FROM sys_role r,sys_user u,`sys_userrole` ur WHERE r.id = ur.role_id AND u.id = ur.user_id and u.id = #{id}
+  </select>
+  <select id="roleList" resultType="com.real.cyd.bean.SysRole" parameterType="com.real.cyd.req.QueryRoleReq">
+    select * from sys_role
+    <where>
+      <if test="id != null and id != ''">
+        AND id = #{id}
+      </if>
+      <if test="roleName != null and roleName != ''">
+        AND roleName = #{roleName}
+      </if>
+      <if test="startTime != null and startTime != ''">
+        AND CREATEtime  &gt;= #{startTime}
+      </if>
+      <if test="endTime != null and endTime != ''">
+        AND CREATEtime  &lt;= #{endTime}
+      </if>
+    </where>
+  </select>
+
+  <select id="selectPermissionParent" resultMap="BaseResultMap2">
+    select * from sys_permission where parent_id is NULL and available = 1 ORDER by sort asc
+  </select>
+  <select id="getCount" resultType="int" parameterType="com.real.cyd.req.QueryRoleReq">
+
+    select count(*) from sys_role
+    <where>
+      <if test="id != null and id != ''">
+        AND id = #{id}
+      </if>
+      <if test="roleName != null and roleName != ''">
+        AND roleName = #{roleName}
+      </if>
+      <if test="startTime != null and startTime != ''">
+        AND CREATEtime  &gt;= #{startTime}
+      </if>
+      <if test="endTime != null and endTime != ''">
+        AND CREATEtime  &lt;= #{endTime}
+      </if>
+    </where>
+  </select>
+  <select id="selectPermissionChildren" resultType="com.real.cyd.bean.SysPermission"
+          parameterType="com.real.cyd.bean.SysPermission">
+    SELECT * FROM sys_permission WHERE parent_id = #{id} AND available = 1 ORDER BY sort ASC
+  </select>
+  <select id="selectThisPermissonAuth" resultType="int" parameterType="Map">
+    SELECT COUNT(*) FROM sys_role r,sys_permission p,sys_permissionrole pr WHERE r.id= pr.role_Id AND p.id= pr.permission_Id AND r.id = #{roleId} AND p.id = #{permissionId}
+  </select>
+  <delete id="deleteAuthByRoleId" parameterType="com.real.cyd.req.AuthPermissionReq">
+    delete from sys_permissionrole where role_Id = #{roleId}
+  </delete>
+  <select id="authPer" parameterType="Map">
+    insert into sys_permissionrole
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="roleId != null" >
+        role_Id,
+      </if>
+      <if test="permissionId != null" >
+        permission_Id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null" >
+        #{roleId,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionId != null" >
+        #{permissionId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from sys_role
     where id = #{id,jdbcType=VARCHAR}
@@ -81,7 +172,7 @@
   <insert id="insert" parameterType="com.real.cyd.bean.SysRole" >
     insert into sys_role (id, roleName, createTime
       )
-    values (#{id,jdbcType=VARCHAR}, #{rolename,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}
+    values (#{id,jdbcType=VARCHAR}, #{rolename,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.real.cyd.bean.SysRole" >
@@ -93,7 +184,7 @@
       <if test="rolename != null" >
         roleName,
       </if>
-      <if test="createtime != null" >
+      <if test="createTime != null" >
         createTime,
       </if>
     </trim>
@@ -104,8 +195,8 @@
       <if test="rolename != null" >
         #{rolename,jdbcType=VARCHAR},
       </if>
-      <if test="createtime != null" >
-        #{createtime,jdbcType=TIMESTAMP},
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -119,8 +210,8 @@
       <if test="record.rolename != null" >
         roleName = #{record.rolename,jdbcType=VARCHAR},
       </if>
-      <if test="record.createtime != null" >
-        createTime = #{record.createtime,jdbcType=TIMESTAMP},
+      <if test="record.createTime != null" >
+        createTime = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -131,7 +222,7 @@
     update sys_role
     set id = #{record.id,jdbcType=VARCHAR},
       roleName = #{record.rolename,jdbcType=VARCHAR},
-      createTime = #{record.createtime,jdbcType=TIMESTAMP}
+      createTime = #{record.createTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -142,8 +233,8 @@
       <if test="rolename != null" >
         roleName = #{rolename,jdbcType=VARCHAR},
       </if>
-      <if test="createtime != null" >
-        createTime = #{createtime,jdbcType=TIMESTAMP},
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
@@ -151,7 +242,10 @@
   <update id="updateByPrimaryKey" parameterType="com.real.cyd.bean.SysRole" >
     update sys_role
     set roleName = #{rolename,jdbcType=VARCHAR},
-      createTime = #{createtime,jdbcType=TIMESTAMP}
+      createTime = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="getRole" resultMap="BaseResultMap">
+    select * from sys_role
+  </select>
 </mapper>

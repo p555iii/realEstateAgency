@@ -19,20 +19,12 @@ public class SysUser {
 
     private String dateStr;
 
-    public String getDateStr() {
-        return dateStr;
-    }
-
-    public void setDateStr(String dateStr) {
-        this.dateStr = dateStr;
-    }
-
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
-        this.id = id == null ? null : id.trim();
+        this.id = id;
     }
 
     public String getUsername() {
@@ -40,7 +32,7 @@ public class SysUser {
     }
 
     public void setUsername(String username) {
-        this.username = username == null ? null : username.trim();
+        this.username = username;
     }
 
     public String getPassword() {
@@ -48,7 +40,7 @@ public class SysUser {
     }
 
     public void setPassword(String password) {
-        this.password = password == null ? null : password.trim();
+        this.password = password;
     }
 
     public String getNickname() {
@@ -56,7 +48,7 @@ public class SysUser {
     }
 
     public void setNickname(String nickname) {
-        this.nickname = nickname == null ? null : nickname.trim();
+        this.nickname = nickname;
     }
 
     public String getSalt() {
@@ -64,7 +56,7 @@ public class SysUser {
     }
 
     public void setSalt(String salt) {
-        this.salt = salt == null ? null : salt.trim();
+        this.salt = salt;
     }
 
     public Integer getState() {
@@ -82,4 +74,21 @@ public class SysUser {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
+    public String getDateStr() {
+        return dateStr;
+    }
+
+    public void setDateStr(String dateStr) {
+        this.dateStr = dateStr;
+    }
+
+    /**
+     * 密码盐.
+     * @return
+     */
+    public String getCredentialsSalt(){
+        return this.username+this.salt;
+    }
+
 }

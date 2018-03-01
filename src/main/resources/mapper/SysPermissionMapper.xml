@@ -78,6 +78,62 @@
     from sys_permission
     where id = #{id,jdbcType=VARCHAR}
   </select>
+    <select id="getPermissions" resultType="com.real.cyd.bean.SysPermission"
+            parameterType="com.real.cyd.bean.SysRole">
+      SELECT p.* FROM sys_permission p,sys_role r,sys_permissionrole pr WHERE r.id = pr.role_id AND p.id = pr.permission_Id and r.id = #{id}
+    </select>
+  <select id="getPermissionsByDeep1" resultType="com.real.cyd.bean.SysPermission"
+          parameterType="com.real.cyd.bean.SysRole">
+    SELECT p.* FROM sys_permission p,sys_role r,sys_permissionrole pr WHERE r.id = pr.role_id AND p.id = pr.permission_Id and r.id = #{id} and p.parent_id is null and p.available = 1 order by p.sort asc
+  </select>
+  <select id="getPermissionsByDeep2" resultType="com.real.cyd.bean.SysPermission"
+          parameterType="Map">
+    SELECT p.* FROM sys_permission p,sys_role r,sys_permissionrole pr WHERE r.id = pr.role_id AND p.id = pr.permission_Id and r.id = #{id} and p.parent_id = #{parentId} and p.available = 1 order by p.sort asc
+  </select>
+  <select id="perList" resultMap="BaseResultMap"
+          parameterType="com.real.cyd.req.QueryPermissionReq">
+    select * from sys_permission
+    <where>
+      <if test="id != null and id != ''">
+        AND id = #{id}
+      </if>
+      <if test="name != null and name != ''">
+        AND name = #{name}
+      </if>
+      <if test="resourceType != null and resourceType != ''">
+        AND resource_Type = #{resourceType}
+      </if>
+      <if test="startTime != null and startTime != ''">
+        AND CREATEtime  &gt;= #{startTime}
+      </if>
+      <if test="endTime != null and endTime != ''">
+        AND CREATEtime  &lt;= #{endTime}
+      </if>
+    </where>
+  </select>
+  <select id="getCount" resultType="int" parameterType="com.real.cyd.req.QueryPermissionReq">
+    select count(*) from sys_permission
+    <where>
+      <if test="id != null and id != ''">
+        AND id = #{id}
+      </if>
+      <if test="name != null and name != ''">
+        AND name = #{name}
+      </if>
+      <if test="resourceType != null and resourceType != ''">
+        AND resource_Type = #{resourceType}
+      </if>
+      <if test="startTime != null and startTime != ''">
+        AND CREATEtime  &gt;= #{startTime}
+      </if>
+      <if test="endTime != null and endTime != ''">
+        AND CREATEtime  &lt;= #{endTime}
+      </if>
+    </where>
+  </select>
+  <select id="queryParentPermission" resultMap="BaseResultMap">
+    select * from sys_permission where parent_id is null order by createTime desc
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from sys_permission
     where id = #{id,jdbcType=VARCHAR}
@@ -88,7 +144,7 @@
       available, createTime)
     values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{resourceType,jdbcType=VARCHAR}, 
       #{url,jdbcType=VARCHAR}, #{permission,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, 
-      #{available,jdbcType=BIT}, #{createtime,jdbcType=TIMESTAMP})
+      #{available,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.real.cyd.bean.SysPermission" >
     insert into sys_permission
@@ -114,8 +170,11 @@
       <if test="available != null" >
         available,
       </if>
-      <if test="createtime != null" >
+      <if test="createTime != null" >
         createTime,
+      </if>
+      <if test="sort != 0" >
+        sort,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -140,8 +199,11 @@
       <if test="available != null" >
         #{available,jdbcType=BIT},
       </if>
-      <if test="createtime != null" >
-        #{createtime,jdbcType=TIMESTAMP},
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sort != 0" >
+        #{sort,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -169,8 +231,8 @@
       <if test="record.available != null" >
         available = #{record.available,jdbcType=BIT},
       </if>
-      <if test="record.createtime != null" >
-        createTime = #{record.createtime,jdbcType=TIMESTAMP},
+      <if test="record.createTime != null" >
+        createTime = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -186,7 +248,7 @@
       permission = #{record.permission,jdbcType=VARCHAR},
       parent_id = #{record.parentId,jdbcType=VARCHAR},
       available = #{record.available,jdbcType=BIT},
-      createTime = #{record.createtime,jdbcType=TIMESTAMP}
+      createTime = #{record.createTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -212,8 +274,8 @@
       <if test="available != null" >
         available = #{available,jdbcType=BIT},
       </if>
-      <if test="createtime != null" >
-        createTime = #{createtime,jdbcType=TIMESTAMP},
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
@@ -226,7 +288,14 @@
       permission = #{permission,jdbcType=VARCHAR},
       parent_id = #{parentId,jdbcType=VARCHAR},
       available = #{available,jdbcType=BIT},
-      createTime = #{createtime,jdbcType=TIMESTAMP}
+      createTime = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="getMaxSortParent" resultType="int">
+    SELECT MAX(sort) FROM sys_permission WHERE parent_id IS NULL
+  </select>
+
+  <select id="getMaxSortChildern" resultType="int" parameterType="com.real.cyd.bean.SysPermission">
+      SELECT MAX(sort) FROM sys_permission WHERE parent_id = #{parentId}
+  </select>
 </mapper>

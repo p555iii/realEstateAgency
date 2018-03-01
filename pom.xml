@@ -119,6 +119,37 @@
 			<version>1.2.2</version>
 		</dependency>
 
+		<!-- shiro ehcache -->
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-ehcache</artifactId>
+			<version>1.2.2</version>
+		</dependency>
+
+		<!--
+            包含支持UI模版（Velocity，FreeMarker，JasperReports），
+            邮件服务，
+            脚本服务(JRuby)，
+            缓存Cache（EHCache），
+            任务计划Scheduling（uartz）。
+         -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.theborakompanioni</groupId>
+			<artifactId>thymeleaf-extras-shiro</artifactId>
+			<version>1.2.1</version>
+		</dependency>
+
+		<!-- Apache工具组件 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.4</version>
+		</dependency>
 
 		<dependency>
 			<groupId>net.sourceforge.nekohtml</groupId>
@@ -130,6 +161,12 @@
             <artifactId>annotations</artifactId>
             <version>RELEASE</version>
         </dependency>
+
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.1.23</version>
+		</dependency>
     </dependencies>
 
 	<build>

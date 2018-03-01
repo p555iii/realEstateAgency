@@ -15,8 +15,8 @@
     <link href="https://cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet"></link>
     <link rel="stylesheet" type="text/css" href="../plugins/layui/css/layui.css" media="all"></link>
     <link rel="stylesheet" type="text/css" href="../css/fs.css" media="all"></link>
-    <script type="text/javascript" src="../plugins/layui/layui.js"></script>
     <script type="text/javascript" src="../plugins/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../plugins/layui/layui.js"></script>
     <script type="text/javascript" src="../plugins/frame/js/fsDict.js?v=1.7.0"></script>
     <script type="text/javascript" src="../plugins/frame/js/fs.js?v=1.7.0"></script>
     <script type="text/javascript" src="../plugins/frame/js/frame.js?v=1.7.0"></script>
@@ -36,15 +36,15 @@
                                 </div>
                             </div>
                             <div class="layui-inline">
-                                <label class="layui-form-mid">名称：</label>
+                                <label class="layui-form-mid">用户名：</label>
                                 <div class="layui-input-inline" style="width: 100px;">
-                                    <input type="text" name="name" autocomplete="off" class="layui-input"/>
+                                    <input type="text" name="username" autocomplete="off" class="layui-input"/>
                                 </div>
                             </div>
                             <div class="layui-inline">
-                                <label class="layui-form-mid">时间：</label>
+                                <label class="layui-form-mid">注册时间：</label>
                                 <div class="layui-input-inline" style="">
-                                    <input type="text" name="createDate" autocomplete="off" class="layui-input fsDate" dateRange="1" placeholder=" - "/>
+                                    <input type="text" name="time" autocomplete="off" class="layui-input fsDate" dateRange="1" placeholder=" - "/>
                                 </div>
                             </div>
                             <div class="layui-inline">
@@ -61,18 +61,18 @@
             <div class="layui-col-md12">
                 <div class="layui-row grid-demo">
                     <div class="layui-col-md12">
-                        <button class="layui-btn" function="top" topUrl="views/datagrid/add.html" topWidth="800px" isMaximize="0" topHeight="600px" topTitle="新增demo">
+                        <button class="layui-btn" function="top" topUrl="/userManager/toAdd" topWidth="550px" isMaximize="0" topHeight="360px" topTitle="新增用户">
                             <i class="layui-icon">&#xe654;</i>新增
                         </button>
-                        <button class="layui-btn layui-btn-danger" function="submit" url="/fsbus/1002" isMutiDml="1" isConfirm="1" confirmMsg="是否确定删除选中的数据？" inputs="id:">
+                        <button class="layui-btn layui-btn-danger" function="submit" url="/userManager/delete" isMutiDml="1" isConfirm="1" confirmMsg="是否确定删除选中的数据？" inputs="id:">
                             <i class="layui-icon">&#xe640;</i>批量删除
                         </button>
                         <button class="layui-btn" function="refresh">
                             <i class="layui-icon">&#x1002;</i>刷新
                         </button>
-                        <button class="layui-btn" function="test">
+                       <!-- <button class="layui-btn" function="test">
                             <i class="layui-icon">&#xe756;</i>测试
-                        </button>
+                        </button>-->
                     </div>
                     <div class="layui-col-md12">
                         <table id="fsDatagrid" lay-filter="fsDatagrid" class="fsDatagrid" isLoad="1" url="/userManager/userList" isPage="1" sortType="1" pageSize="10" defaultForm="query_form" height="full-135"></table>
@@ -82,7 +82,7 @@
                             <p checkbox="true"/>
                             <p field="id" title="ID"  sort="true"/>
                             <p field="username" title="用户名"  sort="true" />
-                            <p field="nickname" title="昵称"  dict="type"/>
+                            <p field="nickname" title="昵称"  sort="type"/>
                             <p field="state" title="状态"  templet="#stateTpl"/>
                             <p field="dateStr" title="创建时间"/>
                             <p fixed="right" align="center" toolbar="#barDemo" title="操作" />
@@ -92,10 +92,10 @@
                             <input type="checkbox" name="state" lay-skin="switch" disabled lay-text="开启|关闭" {{ d.state == 1 ? 'checked' : '' }}>
                         </script>
                         <script type="text/html" id="barDemo">
-                            <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="top" topUrl="views/datagrid/edit.html" topMode="readonly" topWidth="800px" topHeight="600px" topTitle="查看demo" inputs="id:">查看</a>
-                            <a class="layui-btn layui-btn-xs" lay-event="top" topUrl="views/datagrid/edit.html" topWidth="800px" topHeight="600px" topTitle="编辑demo" inputs="id:">编辑</a>
-                            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="submit" url="/fsbus/1002" isConfirm="1" confirmMsg="是否确定删除当前记录？" inputs="id:">删除</a>
-                            <a class="layui-btn layui-btn-xs" lay-event="test2" >测试</a>
+                            <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="top" topUrl="/userManager/toDistRole" topWidth="800px" topHeight="600px" topTitle="查看demo" inputs="id:">角色</a>
+                            <a class="layui-btn layui-btn-xs" lay-event="top" topUrl="/userManager/toUpdate" topWidth="800px" topHeight="600px" topTitle="编辑demo" inputs="id:">编辑</a>
+                            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="submit" url="/userManager/delete" isConfirm="1" confirmMsg="是否确定删除当前记录？" inputs="id:">删除</a>
+                            <!--<a class="layui-btn layui-btn-xs" lay-event="test2" >测试</a>-->
                         </script>
                     </div>
                 </div>

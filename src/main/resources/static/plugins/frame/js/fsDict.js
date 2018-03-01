@@ -53,5 +53,19 @@ layui.fsDict = {
 			inputs : "parentid:,area1:#area2222222",
 			labelField : "name",
 			valueField : "id"
-		}
+		},
+		//父权限
+		parent : {
+			formatType : "server",
+			loadUrl : "/perManager/getParentPer",
+			labelField : "name",
+			valueField : "id"
+		},
+		//role列表
+		role : {
+            formatType : "server",
+            loadUrl : "/roleManager/getRoles",
+            labelField : "roleName",
+            valueField : "id"
+        }
 };

@@ -19,6 +19,26 @@ public class SysPermission {
 
     private Date createTime;
 
+    private String dateStr;
+
+    private int sort;
+
+    public int getSort() {
+        return sort;
+    }
+
+    public void setSort(int sort) {
+        this.sort = sort;
+    }
+
+    public String getDateStr() {
+        return dateStr;
+    }
+
+    public void setDateStr(String dateStr) {
+        this.dateStr = dateStr;
+    }
+
     public String getId() {
         return id;
     }

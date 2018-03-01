@@ -1,6 +1,8 @@
 package com.real.cyd.mapper;
 
 import com.real.cyd.bean.SysUser;
+import com.real.cyd.req.QueryUserReq;
+import com.real.cyd.resp.vo.UserRoleInfoVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -20,7 +22,17 @@ public interface SysUserMapper {
 
     int updateByPrimaryKey(SysUser record);
 
-    List<SysUser> userList();
+    List<SysUser> userList(QueryUserReq user);
 
-    int getCount();
+    int getCount(QueryUserReq user);
+
+    int delectUser(String id);
+
+    SysUser findByUserName(SysUser user);
+
+    UserRoleInfoVo getUserRoleInfo(SysUser user);
+
+    void deleteUserRole(UserRoleInfoVo vo);
+
+    void addUserRole(UserRoleInfoVo vo);
 }

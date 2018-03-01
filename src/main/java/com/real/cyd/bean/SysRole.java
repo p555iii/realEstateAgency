@@ -5,9 +5,19 @@ import java.util.Date;
 public class SysRole {
     private String id;
 
-    private String rolename;
+    private String roleName;
 
     private Date createTime;
+
+    private String dateStr;
+
+    public String getDateStr() {
+        return dateStr;
+    }
+
+    public void setDateStr(String dateStr) {
+        this.dateStr = dateStr;
+    }
 
     public String getId() {
         return id;
@@ -17,12 +27,12 @@ public class SysRole {
         this.id = id == null ? null : id.trim();
     }
 
-    public String getRolename() {
-        return rolename;
+    public String getRoleName() {
+        return roleName;
     }
 
-    public void setRolename(String rolename) {
-        this.rolename = rolename == null ? null : rolename.trim();
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 
     public Date getCreateTime() {
