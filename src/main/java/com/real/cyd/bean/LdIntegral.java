@@ -1,5 +1,6 @@
 package com.real.cyd.bean;
 
+import java.lang.ref.PhantomReference;
 import java.util.Date;
 
 public class LdIntegral {
@@ -12,6 +13,16 @@ public class LdIntegral {
     private Date createTime;
 
     private String dateStr;
+
+    private Double discount;
+
+    public Double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Double discount) {
+        this.discount = discount;
+    }
 
     public String getDateStr() {
         return dateStr;

@@ -34,4 +34,6 @@ public interface OrderService {
     RespBean infoUpdate(LdOrderInfo bean);
 
     RespBeanOneObj getEmTime(String orderId);
+
+    RespBean complete(LdOrder order);
 }

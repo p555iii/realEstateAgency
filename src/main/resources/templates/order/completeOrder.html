@@ -26,13 +26,27 @@
         <input type="hidden" name="id"/>
         <div class="layui-form-item">
 
-            <label class="layui-form-label">类型名</label>
+            <label class="layui-form-label">预计取回时间:</label>
             <div class="layui-input-block">
                 <input type="text" name="dateStr" autocomplete="off" class="layui-input fsDate" dateRange=""  dateType="datetime" dateFormat="yyyy-MM-dd HH:mm:ss"/>
             </div>
         </div>
+        <div class="layui-form-item">
+
+            <label class="layui-form-label">应收金额:</label>
+            <div class="layui-input-block">
+                <input type="text" name="price" required="" lay-verType="tips" disabled placeholder="请输入洗衣价格" autocomplete="off" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+
+            <label class="layui-form-label">折扣后金额:</label>
+            <div class="layui-input-block">
+                <input type="text" name="realPrice" required="" lay-verType="tips" disabled placeholder="请输入洗衣价格" autocomplete="off" class="layui-input"/>
+            </div>
+        </div>
         <div class="layui-form-item" style="text-align: center;">
-            <button class="layui-btn" lay-submit="" lay-filter="save" url="/laundryType/update">修改</button>
+            <button class="layui-btn" lay-submit="" lay-filter="save" url="/order/complete">完成</button>
             <button type="button" class="layui-btn layui-btn-primary" function="close">关闭</button>
         </div>
     </form>

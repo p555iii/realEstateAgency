@@ -27,4 +27,6 @@ public interface LdIntegralMapper {
     int count();
 
     List<LdIntegral> queryListOrder();
+
+    List<LdIntegral> queryListOrderAsc();
 }

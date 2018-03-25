@@ -150,7 +150,7 @@
             maxmin: true,
             content:  "/order/completeOrder?orderId="+key,
             end:function () {
-                location.reload();
+                parent.layer.closeAll();
             }
         });
     })

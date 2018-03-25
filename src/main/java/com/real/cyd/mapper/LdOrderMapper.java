@@ -32,4 +32,6 @@ public interface LdOrderMapper {
     int updateOrderIdSum(LdOrderInfo bean);
 
     void updatePrice(LdOrder ldOrder);
+
+    void updateRealPrice(LdOrder ldOrder);
 }

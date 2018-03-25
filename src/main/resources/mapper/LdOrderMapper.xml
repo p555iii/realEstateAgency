@@ -249,4 +249,7 @@
   <update id="updatePrice" parameterType="com.real.cyd.bean.LdOrder">
     UPDATE ld_order SET price = price + #{price} WHERE id = #{id}
   </update>
+    <update id="updateRealPrice" parameterType="com.real.cyd.bean.LdOrder">
+      UPDATE ld_order SET real_price = #{realPrice} WHERE id = #{id}
+    </update>
 </mapper>

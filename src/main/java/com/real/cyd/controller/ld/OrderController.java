@@ -139,4 +139,10 @@ public class OrderController {
 
         return orderService.getEmTime(orderId);
     }
+
+    @RequestMapping("/complete")
+    @ResponseBody
+    public RespBean complete(LdOrder order){
+        return orderService.complete(order);
+    }
 }

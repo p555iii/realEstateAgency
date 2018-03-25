@@ -38,7 +38,7 @@ public class IntegralController {
     @ResponseBody
     public RespBean list(PageBean page){
         PageHelper.startPage(page.getPageNum(),page.getPageSize());
-        PageHelper.orderBy("create_Time DESC");
+        PageHelper.orderBy("integral ASC");
         RespBean client =integralService.queryList();
         return client;
     }

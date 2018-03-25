@@ -5,6 +5,7 @@
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="integral" property="integral" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="discount" property="discount" jdbcType="DOUBLE"></result>
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -66,7 +67,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, integral, name, create_time
+    id, integral, name, create_time ,discount
   </sql>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
@@ -84,6 +85,9 @@
 
   <select id="count" resultType="int">
     SELECT count(*) FROM ld_integral
+  </select>
+  <select id="queryListOrderAsc" resultMap="BaseResultMap">
+       select * from ld_integral order by integral ASC
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from ld_integral
@@ -111,6 +115,9 @@
       <if test="createTime != null" >
         create_time,
       </if>
+      <if test="discount!= null">
+        discount,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -124,6 +131,9 @@
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="discount != null">
+        #{discount,jdbcType=DOUBLE},
       </if>
     </trim>
   </insert>
@@ -169,6 +179,9 @@
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="discount != null">
+        discount = #{discount,jdbcType=DOUBLE},
       </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}

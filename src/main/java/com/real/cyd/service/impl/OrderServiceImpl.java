@@ -38,6 +38,8 @@ public class OrderServiceImpl implements OrderService {
     private LdClothesTypeMapper ldClothesTypeMapper;
     @Resource
     private LdLaundryTypeMapper ldLaundryTypeMapper;
+    @Resource
+    private LdIntegralMapper ldIntegralMapper;
 
     @Override
     public RespBean queryList(QueryOrderReq req) {
@@ -218,6 +220,32 @@ public class OrderServiceImpl implements OrderService {
             date = cal.getTime();
             ldOrder.setDateStr(ToolsUtils.getDateStr(date));
         }
+        List<LdIntegral> ldIntegrals = ldIntegralMapper.queryListOrder();  //得到正序积分
+        //得到该定单的客户
+        LdClient client = ldClientMapper.selectByPrimaryKey(ldOrder.getClientId());
+        BigDecimal price = ldOrder.getPrice();
+        for(LdIntegral integral : ldIntegrals){
+            if(integral.getIntegral() <= client.getLevel()){
+                client.setIntegralName(integral.getName());
+                BigDecimal discount = BigDecimal.valueOf(integral.getDiscount());
+                BigDecimal multiply = price.multiply(discount);
+                ldOrder.setRealPrice(multiply);
+                break;
+            }
+            if(integral.getIntegral() == ldIntegrals.get(ldIntegrals.size() -1 ).getIntegral()){
+                client.setIntegralName(integral.getName());
+                BigDecimal discount = BigDecimal.valueOf(integral.getDiscount());
+                BigDecimal multiply = price.multiply(discount);
+                ldOrder.setRealPrice(multiply);
+            }
+        }
+        //修改真实价格
+        ldOrderMapper.updateRealPrice(ldOrder);
         return ToolsUtils.getRespOneObj(ldOrder);
+    }
+
+    @Override
+    public RespBean complete(LdOrder order) {
+        return null;
     }
 }

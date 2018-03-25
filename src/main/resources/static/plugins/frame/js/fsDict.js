@@ -79,6 +79,12 @@ layui.fsDict = {
 			loadUrl : "/laundryType/laundryList",
 			labelField : "laundryType",
 			valueField : "id"
-    	}
+    	},
+		record:{
+			formatType : "server",
+			loadUrl : "/record",
+			labelField : "isRecord",
+			valueField : "value"
+		}
 
 };
