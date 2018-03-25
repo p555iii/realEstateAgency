@@ -296,6 +296,6 @@
   </select>
 
   <select id="getMaxSortChildern" resultType="int" parameterType="com.real.cyd.bean.SysPermission">
-      SELECT MAX(sort) FROM sys_permission WHERE parent_id = #{parentId}
+      SELECT CASE WHEN MAX(sort) IS NULL THEN 0 ELSE MAX(sort) END FROM sys_permission WHERE parent_id =  #{parentId}
   </select>
 </mapper>

@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.real.cyd.mapper.LdOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.real.cyd.bean.LdOrder" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="client_id" property="clientId" jdbcType="VARCHAR" />
+    <result column="sum" property="sum" jdbcType="INTEGER" />
+    <result column="estimated_time" property="estimatedTime" jdbcType="TIMESTAMP" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="real_price" property="realPrice" jdbcType="DECIMAL"></result>
+  </resultMap>
+  <resultMap id="BaseResultMap2" type="com.real.cyd.bean.vo.LdOrderVo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="client_id" property="clientId" jdbcType="VARCHAR" />
+    <result column="sum" property="sum" jdbcType="INTEGER" />
+    <result column="estimated_time" property="estimatedTime" jdbcType="TIMESTAMP" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="name" property="name" jdbcType="VARCHAR"></result>
+    <result column="phone" property="phone" jdbcType="INTEGER"></result>
+    <result column="real_price" property="realPrice" jdbcType="DECIMAL"></result>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, client_id, sum, estimated_time, price, create_time
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ld_order
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+    <select id="queryList" parameterType="com.real.cyd.req.ld.QueryOrderReq" resultMap="BaseResultMap2">
+       SELECT o.*,c.`name`,c.`phone` FROM ld_order o LEFT JOIN ld_client  c ON  o.`client_id` = c.`id`
+       <where>
+         <if test="id != null and id != ''" >
+           o.id = #{id}
+         </if>
+         <if test="name != null and name != ''" >
+           c.name = #{name}
+         </if>
+         <if test="phone != null and phone != ''" >
+           c.`phone` = #{phone}
+         </if>
+         <if test="startTime != null and startTime != ''">
+           AND o.CREATE_time  &gt;= #{startTime}
+         </if>
+         <if test="endTime != null and endTime != ''">
+           AND o.CREATE_time  &lt;= #{endTime}
+         </if>
+         <if test="emStartTime != null and emStartTime != ''">
+           AND estimated_time  &gt;= #{emStartTime}
+         </if>
+         <if test="emEndTime != null and emEndTime != ''">
+           AND estimated_time  &lt;= #{emEndTime}
+         </if>
+       </where>
+    </select>
+  <select id="count" resultType="int">
+    SELECT count(*) FROM ld_order
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ld_order
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="insert" parameterType="com.real.cyd.bean.LdOrder" >
+    insert into ld_order (id, client_id, sum, 
+      estimated_time, price, create_time
+      )
+    values (#{id,jdbcType=VARCHAR}, #{clientId,jdbcType=VARCHAR}, #{sum,jdbcType=INTEGER}, 
+      #{estimatedTime,jdbcType=TIMESTAMP}, #{price,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.real.cyd.bean.LdOrder" >
+    insert into ld_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="clientId != null" >
+        client_id,
+      </if>
+      <if test="sum != null" >
+        sum,
+      </if>
+      <if test="estimatedTime != null" >
+        estimated_time,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="clientId != null" >
+        #{clientId,jdbcType=VARCHAR},
+      </if>
+      <if test="sum != null" >
+        #{sum,jdbcType=INTEGER},
+      </if>
+      <if test="estimatedTime != null" >
+        #{estimatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ld_order
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.clientId != null" >
+        client_id = #{record.clientId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sum != null" >
+        sum = #{record.sum,jdbcType=INTEGER},
+      </if>
+      <if test="record.estimatedTime != null" >
+        estimated_time = #{record.estimatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ld_order
+    set id = #{record.id,jdbcType=VARCHAR},
+      client_id = #{record.clientId,jdbcType=VARCHAR},
+      sum = #{record.sum,jdbcType=INTEGER},
+      estimated_time = #{record.estimatedTime,jdbcType=TIMESTAMP},
+      price = #{record.price,jdbcType=DECIMAL},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.real.cyd.bean.LdOrder" >
+    update ld_order
+    <set >
+      <if test="clientId != null" >
+        client_id = #{clientId,jdbcType=VARCHAR},
+      </if>
+      <if test="sum != null" >
+        sum = #{sum,jdbcType=INTEGER},
+      </if>
+      <if test="estimatedTime != null" >
+        estimated_time = #{estimatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.real.cyd.bean.LdOrder" >
+    update ld_order
+    set client_id = #{clientId,jdbcType=VARCHAR},
+      sum = #{sum,jdbcType=INTEGER},
+      estimated_time = #{estimatedTime,jdbcType=TIMESTAMP},
+      price = #{price,jdbcType=DECIMAL},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateOrderIdSum" parameterType="com.real.cyd.bean.LdOrderInfo">
+    UPDATE ld_order SET SUM = SUM + 1 WHERE id = #{orderId}
+  </update>
+  <update id="updatePrice" parameterType="com.real.cyd.bean.LdOrder">
+    UPDATE ld_order SET price = price + #{price} WHERE id = #{id}
+  </update>
+</mapper>

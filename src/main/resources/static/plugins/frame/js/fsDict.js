@@ -67,5 +67,18 @@ layui.fsDict = {
             loadUrl : "/roleManager/getRoles",
             labelField : "roleName",
             valueField : "id"
-        }
+        },
+        cloth:{
+            formatType : "server",
+            loadUrl : "/clothesType/clothList",
+            labelField : "typeName",
+            valueField : "id"
+		},
+    	laundey:{
+			formatType : "server",
+			loadUrl : "/laundryType/laundryList",
+			labelField : "laundryType",
+			valueField : "id"
+    	}
+
 };

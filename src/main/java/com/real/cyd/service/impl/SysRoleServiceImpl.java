@@ -8,6 +8,7 @@ import com.real.cyd.resp.RespBeanOneObj;
 import com.real.cyd.service.SysRoleService;
 import com.real.cyd.utils.ToolsUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -50,7 +51,7 @@ public class SysRoleServiceImpl implements SysRoleService {
         }
         return ToolsUtils.getRespBean(roleList,count);
     }
-
+    @Transactional
     @Override
     public void insertRole(SysRole role) {
         if(role == null ){
@@ -64,7 +65,7 @@ public class SysRoleServiceImpl implements SysRoleService {
         }
         roleMapper.insertSelective(role);
     }
-
+    @Transactional
     @Override
     public RespBean deleteUser(String id) {
         RespBean res = new RespBean();
@@ -87,7 +88,7 @@ public class SysRoleServiceImpl implements SysRoleService {
         SysRole role = roleMapper.selectByPrimaryKey(id);
         return ToolsUtils.getRespOneObj(role);
     }
-
+    @Transactional
     @Override
     public void updateUser(SysRole role) {
         roleMapper.updateByPrimaryKeySelective(role);
@@ -128,7 +129,7 @@ public class SysRoleServiceImpl implements SysRoleService {
         }
         return list;
     }
-
+    @Transactional
     @Override
     public void authPer(AuthPermissionReq req) {
         //删掉过去属于该角色的权限

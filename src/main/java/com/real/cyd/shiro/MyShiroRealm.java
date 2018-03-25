@@ -14,6 +14,7 @@ import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
@@ -58,7 +59,10 @@ public class MyShiroRealm extends AuthorizingRealm{
         if(userInfo == null){
             return null;
         }
-
+        //如果这个用户已经被停用了也返回
+        if(userInfo.getState() == 0){
+            return null;
+        }
         /*
          * 获取权限信息:这里没有进行实现，
          * 请自行根据UserInfo,Role,Permission进行实现；
@@ -69,7 +73,9 @@ public class MyShiroRealm extends AuthorizingRealm{
 
         //账号判断;
 
-        //加密方式;
+        //加密方式 MD5;
+        utoken.setPassword((new SimpleHash("MD5", utoken.getPassword(), userInfo.getCredentialsSalt(), 10).toString().toCharArray()));
+       // System.out.println(userInfo.getCredentialsSalt());
         //交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以自定义实现
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
                 userInfo, //用户名
@@ -77,7 +83,8 @@ public class MyShiroRealm extends AuthorizingRealm{
                 ByteSource.Util.bytes(userInfo.getCredentialsSalt()),//salt=username+salt
                 getName()  //realm name
         );
-
+        //System.out.println((new SimpleHash("MD5", utoken.getPassword(), userInfo.getCredentialsSalt(), 10).toString()));
+        //System.out.println(authenticationInfo.getCredentialsSalt()+"---"+userInfo.getPassword());
         //明文: 若存在，将此用户存放到登录认证info中，无需自己做密码对比，Shiro会为我们进行密码对比校验
 //      SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
 //           userInfo, //用户名

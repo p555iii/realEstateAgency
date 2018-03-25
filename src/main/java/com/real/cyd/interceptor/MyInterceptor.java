@@ -3,7 +3,9 @@ package com.real.cyd.interceptor;
 import com.real.cyd.bean.SysPermissionTree;
 import com.real.cyd.bean.SysUser;
 import com.real.cyd.service.SysPermissionService;
+import com.real.cyd.utils.ShiroUtil;
 import com.real.cyd.utils.SpringUtils;
+import org.apache.shiro.UnavailableSecurityManagerException;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -11,13 +13,16 @@ import org.apache.commons.lang3.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 /**
  * Create in INtelliJ IDEA
  * Author cyd
  * Date   2018/1/4
  */
 public class MyInterceptor implements HandlerInterceptor {
+
+    private Logger logger =  LoggerFactory.getLogger(this.getClass());
     /**
      *  在请求处理之前进行调用  返回true才能继续执行
      * @param
@@ -38,36 +43,7 @@ public class MyInterceptor implements HandlerInterceptor {
                 request.setAttribute(setting.getSysKey(),setting.getSysValue());
             }
 */
-            /**
-             * 保存登录信息
-             */
-            SysUser me = new SysUser();
-            me.setId("7");//ShiroUtil.getSessionUser();
-            if(me == null){
-                return true;
-            }
-            me.setPassword("");
-            request.setAttribute("me", me);
-            /**
-             * 资源和当前选中菜单
-             */
-            String res = request.getParameter("p");
-            if (StringUtils.isNotBlank(res)) {
-                request.getSession().setAttribute("res", res);
-            }
-            String cur = request.getParameter("t");
-            if (StringUtils.isNotBlank(cur)) {
-                request.getSession().setAttribute("cur", cur);
-            }
-            /**
-             * 获取当前用户的菜单
-             */
-
-            List<SysPermissionTree> treeMenus = SpringUtils.getBean(SysPermissionService.class).selectTreeMenuByUserId(me.getId());
-            //System.out.println("-0--------"+treeMenus.get(0).getSysPermission().getUrl());
-
-            request.getSession().setAttribute("treeMenus", treeMenus);
-            //request.setAttribute("treeMenus", treeMenus);
+            //logger.error("dsdsdsdsssssssssssss");
 
         }
         return true;

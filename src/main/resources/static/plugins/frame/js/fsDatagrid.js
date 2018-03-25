@@ -410,7 +410,7 @@ layui.define(["fsCommon","table",'laypage','fsConfig','form','fsButtonCommon'], 
           var _url = _this.attr("topUrl");
           if($.isEmpty(_url))
           {
-          	fsCommon.warnMsg("url地址为空！");
+          	//fsCommon.warnMsg("url地址为空！");
             return false;
           }
           

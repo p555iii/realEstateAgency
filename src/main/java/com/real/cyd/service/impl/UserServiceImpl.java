@@ -10,6 +10,7 @@ import com.real.cyd.resp.RespBeanOneObj;
 import com.real.cyd.resp.vo.UserRoleInfoVo;
 import com.real.cyd.service.UserService;
 import com.real.cyd.utils.ToolsUtils;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,10 +39,15 @@ public class UserServiceImpl implements UserService{
         if(user.getState() == null){
             user.setState(0);
         }
+        if(user.getPassword()!= null){
+            user.setSalt(user.getId());
+            Object obj = new SimpleHash("MD5", user.getPassword(), user.getCredentialsSalt(), 10);
+            user.setPassword(obj.toString());
+        }
         return userMapper.insert(user);
     }
 
-
+    @Transactional
     public int updateUser(SysUser user) {
         if(user.getState() == null){
             user.setState(0);
@@ -49,7 +55,7 @@ public class UserServiceImpl implements UserService{
         return userMapper.updateByPrimaryKeySelective(user);
     }
 
-
+    @Transactional
     public int deleteUser(SysUser user) {
         return 0;
     }
@@ -74,7 +80,7 @@ public class UserServiceImpl implements UserService{
         }
         return ToolsUtils.getRespBean(sysUsers,count);
     }
-
+    @Transactional
     @Override
     public RespBean deleteUser(String id) {
         RespBean res = new RespBean();
@@ -114,7 +120,7 @@ public class UserServiceImpl implements UserService{
         UserRoleInfoVo list = userMapper.getUserRoleInfo(user);
         return ToolsUtils.getRespOneObj(list);
     }
-
+    @Transactional
     @Override
     public void updateUserRole(UserRoleInfoVo vo) {
         //1删除原角色

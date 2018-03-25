@@ -91,4 +91,14 @@ public class ToolsUtils {
         }
         return null;
     }
+
+    /**
+     * 用来做空判断的工具方法
+     */
+    public static boolean IsNull(String str){
+        if(str == null || str.equals("")){
+            return true;
+        }
+        return false;
+    }
 }

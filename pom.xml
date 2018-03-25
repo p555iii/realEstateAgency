@@ -6,7 +6,7 @@
 	<groupId>com.real.cyd</groupId>
 	<artifactId>realEstateAgency</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>realEstateAgency</name>
 	<description>Demo project for Spring Boot</description>
@@ -25,10 +25,12 @@
 	</properties>
 
 	<dependencies>
+		<!-- 忽略自带的日志框架. -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
+
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

@@ -28,4 +28,13 @@ public class RespBean {
     public void setResults(Result results) {
         this.results = results;
     }
+
+    @Override
+    public String toString() {
+        return "RespBean{" +
+                "errorNo='" + errorNo + '\'' +
+                ", errorInfo='" + errorInfo + '\'' +
+                ", results=" + results +
+                '}';
+    }
 }

@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.real.cyd.mapper.LdOrderInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.real.cyd.bean.LdOrderInfo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="clothestype_id" property="clothestypeId" jdbcType="VARCHAR" />
+    <result column="laundeytype_id" property="laundeytypeId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="com.real.cyd.bean.vo.LdOrderInfoVo" >
+    <id column="id" property="infoId" jdbcType="VARCHAR" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="clothestype_id" property="clothestypeId" jdbcType="VARCHAR" />
+    <result column="laundeytype_id" property="laundeytypeId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="type_name" property="clothesTypeName" jdbcType="VARCHAR"></result>
+    <result column="Laundry_type" property="laundeyTypeName" jdbcType="VARCHAR"></result>
+    <result column="price" property="price" jdbcType="VARCHAR"></result>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, order_id, clothestype_id, laundeytype_id, create_time
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ld_order_info
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="list" resultMap="BaseResultMap2"
+          parameterType="com.real.cyd.req.ld.QueryDetailsReq">
+    SELECT i.*,c.`type_name`,l.`Laundry_type`,c.`price`+l.`price` price FROM ld_order_info i LEFT JOIN ld_clothes_type c ON i.`clothestype_id` = c.`id` LEFT JOIN ld_laundry_type l ON i.`laundeytype_id` = l.`id`
+    <where>
+        <if test="id != null and id != ''">
+          AND i.order_id = #{id}
+        </if>
+        <if test="infoId != null and infoId != ''">
+          AND  i.id = #{infoId}
+        </if>
+        <if test="clothestypeId != null and clothestypeId != ''">
+          AND  i.clothestype_id = #{clothestypeId}
+        </if>
+        <if test="laundeytypeId != null and laundeytypeId != ''">
+          AND i.laundeytype_id = #{laundeytypeId}
+        </if>
+        <if test="startTime != null and startTime != ''">
+          AND i.CREATE_time  &gt;= #{startTime}
+        </if>
+        <if test="endTime != null and endTime != ''">
+          AND i.CREATE_time  &lt;= #{endTime}
+        </if>
+    </where>
+  </select>
+  <select id="count" resultType="int" parameterType="com.real.cyd.req.ld.QueryDetailsReq">
+
+      select COUNT(*) from ld_order_info
+      <where>
+        <if test="id != null and id != ''">
+          AND order_id = #{id}
+        </if>
+        <if test="infoId != null and infoId != ''">
+          AND id = #{infoId}
+        </if>
+        <if test="clothestypeId != null and clothestypeId != ''">
+          AND clothestype_id = #{clothestypeId}
+        </if>
+        <if test="laundeytypeId != null and laundeytypeId != ''">
+          AND laundeytype_id = #{laundeytypeId}
+        </if>
+        <if test="startTime != null and startTime != ''">
+          AND CREATE_time  &gt;= #{startTime}
+        </if>
+        <if test="endTime != null and endTime != ''">
+          AND CREATE_time  &lt;= #{endTime}
+        </if>
+      </where>
+
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ld_order_info
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.real.cyd.bean.LdOrderInfo" >
+    insert into ld_order_info (id, order_id, clothestype_id, 
+      laundeytype_id, create_time)
+    values (#{id,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{clothestypeId,jdbcType=VARCHAR}, 
+      #{laundeytypeId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.real.cyd.bean.LdOrderInfo" >
+    insert into ld_order_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="clothestypeId != null" >
+        clothestype_id,
+      </if>
+      <if test="laundeytypeId != null" >
+        laundeytype_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="clothestypeId != null" >
+        #{clothestypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="laundeytypeId != null" >
+        #{laundeytypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ld_order_info
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderId != null" >
+        order_id = #{record.orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.clothestypeId != null" >
+        clothestype_id = #{record.clothestypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.laundeytypeId != null" >
+        laundeytype_id = #{record.laundeytypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ld_order_info
+    set id = #{record.id,jdbcType=VARCHAR},
+      order_id = #{record.orderId,jdbcType=VARCHAR},
+      clothestype_id = #{record.clothestypeId,jdbcType=VARCHAR},
+      laundeytype_id = #{record.laundeytypeId,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.real.cyd.bean.LdOrderInfo" >
+    update ld_order_info
+    <set >
+      <if test="orderId != null" >
+        order_id = #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="clothestypeId != null" >
+        clothestype_id = #{clothestypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="laundeytypeId != null" >
+        laundeytype_id = #{laundeytypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.real.cyd.bean.LdOrderInfo" >
+    update ld_order_info
+    set order_id = #{orderId,jdbcType=VARCHAR},
+      clothestype_id = #{clothestypeId,jdbcType=VARCHAR},
+      laundeytype_id = #{laundeytypeId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

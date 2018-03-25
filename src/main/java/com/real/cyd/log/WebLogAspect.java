@@ -17,6 +17,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
  * Create in INtelliJ IDEA
  * Author cyd
  * Date   2018/1/2
+ * 拦截请求地址 参数  方便开发使用  后期关闭
  */
 @Aspect
 @Component
@@ -36,7 +37,7 @@ public class WebLogAspect {
      * ~ 第五个 * 任意方法
      * ~ .. 匹配任意数量的参数.
      */
-    @Pointcut("execution(* com.real.cyd.controller.*.*(..))")
+    @Pointcut("execution(* com.real.cyd.controller.*.*.*(..))")
     public void webLog(){}
 
     @Before("webLog()")

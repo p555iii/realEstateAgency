@@ -24,8 +24,23 @@
 </head>
 <body>
 <style>
-    td > label{
-        padding: 3px;
+    .parent_node{
+        width: 750px;
+        height: 80px;
+        display: flex;
+        padding-left: 50px;
+        padding-top: 20px;
+        border-bottom: 1px solid #f4f4f4;
+    }
+    .parent_node:hover{
+        background-color: #f4f4f4;
+    }
+    .submit_button{
+        margin-top: 50px;
+    }
+    .childrens{
+        margin-left: 30px;
+        display: flex;
     }
 </style>
 <div class="row">
@@ -37,27 +52,31 @@
                 <!-- form start -->
 
                 <div class="box-body">
-                    <table class="table table-hover">
 
-                            <label  th:each="tree : ${list}">
-                            <tr>
-                                <td width="150px">
+                    <div class="table table-hover">
 
-                                   <!-- th:checked="${tree.allowAccess eq 'true' ? 'checked':''}"-->
-                                  <input name="mid" type="checkbox"   th:value="${tree.sysMenu.id}" th:checked="${tree.allowAccess eq true ? 'true':'false'}" th:title="${tree.sysMenu.name}"></td>
-                                <td th:each="collectc : ${tree.children}">
+                        <div class="parent_node" th:each="tree : ${list}">
 
-                                        <input name="mid" type="checkbox" th:value="${collectc.sysMenu.id}" th:checked="${collectc.allowAccess eq true ? 'true':'false'}"  th:title="${collectc.sysMenu.name}">
 
-                                <br>
-                            </td>
-                            </tr>
-                            </label>
 
-                    </table>
+                                    <!-- th:checked="${tree.allowAccess eq 'true' ? 'checked':''}"-->
+                                    <input name="mid" type="checkbox"   th:value="${tree.sysMenu.id}" th:checked="${tree.allowAccess eq true ? 'true':'false'}" th:title="${tree.sysMenu.name}">
+
+                            <div class="childrens">
+                            <div class="children_node" th:each="collectc : ${tree.children}">
+
+                                    <input name="mid" type="checkbox" th:value="${collectc.sysMenu.id}" th:checked="${collectc.allowAccess eq true ? 'true':'false'}"  th:title="${collectc.sysMenu.name}">
+
+
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+
+                    </div>
                 </div>
-                <hr/>
-                <div class="layui-form-item" style="text-align: center;">
+
+                <div class="layui-form-item submit_button" style="text-align: center;">
                     <button class="layui-btn" lay-submit="" lay-filter="save" url="/roleManager/authPer">授权</button>
                     <button type="button" class="layui-btn layui-btn-primary" function="close">关闭</button>
                 </div>

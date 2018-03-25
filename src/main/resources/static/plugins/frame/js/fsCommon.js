@@ -353,7 +353,7 @@ layui.define(['layer','form','fsConfig','fsButtonCommon'], function (exports) {
 	    		var _url = _this.attr("topUrl");
 	    		if($.isEmpty(_url))
 	    		{
-	    			fsCommon.warnMsg("url地址为空！");
+	    			//fsCommon.warnMsg("url地址为空！");
 	    			return false;
 	    		}
 	    		
