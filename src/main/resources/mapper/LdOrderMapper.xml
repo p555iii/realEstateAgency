@@ -18,7 +18,7 @@
     <result column="price" property="price" jdbcType="DECIMAL" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="name" property="name" jdbcType="VARCHAR"></result>
-    <result column="phone" property="phone" jdbcType="INTEGER"></result>
+    <result column="phone" property="phone" jdbcType="VARCHAR"></result>
     <result column="real_price" property="realPrice" jdbcType="DECIMAL"></result>
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -117,6 +117,21 @@
     </select>
   <select id="count" resultType="int">
     SELECT count(*) FROM ld_order
+  </select>
+  <select id="queryOrderSum" resultType="int">
+    SELECT count(*) FROM ld_order where estimated_time is not NULL
+  </select>
+  <select id="queryOrderSumToDay" resultType="int">
+    SELECT COUNT(*) FROM ld_order WHERE estimated_time IS NOT NULL AND DATE(create_time) =  CURDATE()
+  </select>
+    <select id="getThisDayOrderCount" resultType="int">
+    select count(*) from ld_order where estimated_time IS NOT NULL AND DAY(create_time) = #{day} AND  MONTH(create_time) = ( SELECT DATE_FORMAT( CURRENT_TIMESTAMP(),'%m' ) ) AND YEAR(create_time) = ( SELECT DATE_FORMAT( CURRENT_TIMESTAMP(),'%Y' ) )
+    </select>
+  <select id="getThisDayLaunryCount" resultType="int">
+    SELECT IFNULL(SUM(SUM),0) FROM ld_order WHERE estimated_time IS NOT NULL AND DAY(create_time) = #{day} AND  MONTH(create_time) = ( SELECT DATE_FORMAT( CURRENT_TIMESTAMP(),'%m' ) ) AND YEAR(create_time) = ( SELECT DATE_FORMAT( CURRENT_TIMESTAMP(),'%Y' ) )
+  </select>
+  <select id="getThisDayPriceCount" resultType="int">
+        SELECT IFNULL(SUM(real_price),0) FROM ld_order WHERE estimated_time IS NOT NULL AND DAY(create_time) = #{day} AND  MONTH(create_time) = ( SELECT DATE_FORMAT( CURRENT_TIMESTAMP(),'%m' ) ) AND YEAR(create_time) = ( SELECT DATE_FORMAT( CURRENT_TIMESTAMP(),'%Y' ) )
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from ld_order
@@ -251,5 +266,8 @@
   </update>
     <update id="updateRealPrice" parameterType="com.real.cyd.bean.LdOrder">
       UPDATE ld_order SET real_price = #{realPrice} WHERE id = #{id}
+    </update>
+    <update id="updateEmTime" parameterType="com.real.cyd.bean.LdOrder">
+      UPDATE ld_order SET estimated_time = #{dateStr} WHERE id = #{id}
     </update>
 </mapper>

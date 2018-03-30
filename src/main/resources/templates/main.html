@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"></meta>
+    <title>layout 后台大布局 - Layui</title>
+    <script src="https://cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="https://cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="plugins/layui/css/layui.css" media="all"/>
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script type="text/javascript" src="./plugins/jquery/jquery.min.js"></script>
+    <link href="plugins/contextMenu/jquery.contextMenu.min.css" rel="stylesheet">
+    <script src="plugins/contextMenu/jquery.contextMenu.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="./css/fs.css?v=1.7.1" media="all"/>
+    <link rel="stylesheet" type="text/css" href="./css/main.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href="./css/iconfont.css">
+    <link rel="stylesheet" href="./css/font_tnyc012u2rlwstt9.css" media="all" />
+    <script type="text/javascript" src="/plugins/layui/layui.js"></script>
+    <script type="text/javascript" src="/plugins/frame/js/fsDict.js?v=1.7.1"></script>
+    <script type="text/javascript" src="/plugins/frame/js/fs.js?v=1.7.1"></script>
+    <script type="text/javascript" src="/plugins/frame/js/main.js?v=1.7.1"></script>
+    <script type="text/javascript" src="/plugins/echarts/echarts.min.js"></script>
+</head>
+<body class="childrenBody">
+<div class="panel_box row">
+    <div class="panel col">
+        <a href="javascript:;" data-url="page/message/message.html">
+            <div class="panel_icon">
+                <i class="iconfont icon-dingdan1" ></i>
+            </div>
+            <div class="panel_word newMessage">
+                <span th:text="${bean.toDayOrder}"></span>
+                <cite>今日订单</cite>
+            </div>
+        </a>
+    </div>
+    <div class="panel col">
+        <a href="javascript:;" data-url="page/user/allUsers.html">
+            <div class="panel_icon" style="background-color:#FF5722;">
+                <i class="iconfont icon-dingdan"></i>
+            </div>
+            <div class="panel_word userAll">
+                <span th:text="${bean.countOrder}"></span>
+                <cite>累计订单</cite>
+            </div>
+        </a>
+    </div>
+    <div class="panel col">
+        <a href="javascript:;" data-url="page/user/allUsers.html">
+            <div class="panel_icon" style="background-color:#009688;">
+                <i class="iconfont icon-xiyiji2"></i>
+            </div>
+            <div class="panel_word userAll">
+                <span th:text="${bean.toDayLaundry}"></span>
+                <cite>今日入库衣物数</cite>
+            </div>
+        </a>
+    </div>
+    <div class="panel col">
+        <a href="javascript:;" data-url="page/img/images.html">
+            <div class="panel_icon" style="background-color:#5FB878;">
+                <i class="iconfont icon-shouru1"></i>
+            </div>
+            <div class="panel_word imgAll">
+                <span th:text="${bean.toDayRecord}"></span>
+                <cite>今日入账</cite>
+            </div>
+        </a>
+    </div>
+    <div class="panel col">
+        <a href="javascript:;" data-url="page/news/newsList.html">
+            <div class="panel_icon" style="background-color:#F7B824;">
+                <i class="iconfont icon-zhangdan" data-icon="icon-wenben"></i>
+            </div>
+            <div class="panel_word waitNews">
+                <span th:text="${bean.toDayDebit}"></span>
+                <cite>今日出帐</cite>
+            </div>
+        </a>
+    </div>
+    <div class="panel col max_panel">
+        <a href="javascript:;" data-url="page/news/newsList.html">
+            <div class="panel_icon" style="background-color:#2F4056;">
+                <i class="iconfont icon-zhangdan" data-icon="icon-text"></i>
+            </div>
+            <div class="panel_word allNews">
+                <span th:text="${bean.countRecord}"></span>
+                <em>累计账单</em>
+            </div>
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="sysNotice col" style="width:1692px;">
+        <blockquote class="layui-elem-quote title">统计</blockquote>
+        <div class="layui-elem-quote layui-quote-nm" style="height:800px;">
+
+            <div id="main" style="width: 800px;height:400px;float:left;" ></div>
+            <div id="main2" style="width: 800px;height:400px;float:left;"></div>
+            <div id="main3" style="width: 800px;height:400px;float:left;"></div>
+            <div id="main4" style="width: 800px;height:400px;float:left;"></div>
+        </div>
+    </div>
+
+</div>
+</body>
+<script th:inline="javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+    var data = [[${data}]];
+    var data2 = [[${data2}]];
+    var data3 = [[${data3}]];
+    var record = [[${record}]];
+    var f = [[${f}]];
+    var a = [[${a}]];
+    var b = [[${b}]];
+    var rows= new Array(); //定义一数组
+    rows=data.row.split(","); //字符分割
+    line=data.line.split(",");
+    line2=data2.line.split(",");
+    line3=data3.line.split(",");
+    line4=a.split(",");
+    line5=b.split(",");
+    // 指定图表的配置项和数据
+    option = {
+        title: {
+            text: '当月订单数',
+            subtext: data.month + '月'
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross'
+            }
+        },
+        xAxis:  {
+            type: 'category',
+            boundaryGap: false,
+            data: rows
+        },
+        yAxis: {
+            type: 'value',
+            axisLabel: {
+                formatter: '{value} 单'
+            },
+            axisPointer: {
+                snap: true
+            }
+        },
+        toolbox: {
+            show : true,
+            feature : {
+                dataView : {show: true, readOnly: false},
+                magicType : {show: true, type: ['line', 'bar']},
+                restore : {show: true},
+                saveAsImage : {show: true}
+            }
+        },
+        series: [
+            {
+                name:'订单数',
+                type:'line',
+                smooth: true,
+                data: line
+            }
+        ]
+    };
+
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+
+    //第二个   2重线
+
+    // 基于准备好的dom，初始化echarts实例
+    var myChart2 = echarts.init(document.getElementById('main2'));
+    var colors = ['#5793f3', '#d14a61', '#675bba'];
+    option = {
+        color: colors,
+
+        tooltip: {
+            trigger: 'none',
+            axisPointer: {
+                type: 'cross'
+            }
+        },
+        legend: {
+            data:['当月衣物数', '当月收入']
+        },
+        grid: {
+            top: 70,
+            bottom: 50
+        },
+        xAxis: [
+            {
+                type: 'category',
+                axisTick: {
+                    alignWithLabel: true
+                },
+                axisLine: {
+                    onZero: false,
+                    lineStyle: {
+                        color: colors[1]
+                    }
+                },
+                axisPointer: {
+                    label: {
+                        formatter: function (params) {
+                            return '收入' + params.value
+                                + (params.seriesData.length ? '：' + params.seriesData[0].data : '');
+                        }
+                    }
+                },
+                data: rows
+            },
+            {
+                type: 'category',
+                axisTick: {
+                    alignWithLabel: true
+                },
+                axisLine: {
+                    onZero: false,
+                    lineStyle: {
+                        color: colors[0]
+                    }
+                },
+                axisPointer: {
+                    label: {
+                        formatter: function (params) {
+                            return '洗衣数  ' + params.value
+                                + (params.seriesData.length ? '：' + params.seriesData[0].data : '');
+                        }
+                    }
+                },
+                data: rows
+            }
+        ],
+        toolbox: {
+            show : true,
+            feature : {
+                dataView : {show: true, readOnly: false},
+                magicType : {show: true, type: ['line', 'bar']},
+                restore : {show: true},
+                saveAsImage : {show: true}
+            }
+        },
+        yAxis: [
+            {
+                type: 'value'
+            }
+        ],
+        series: [
+            {
+                name:'当月衣物数',
+                type:'line',
+                xAxisIndex: 1,
+                smooth: true,
+                data: line2
+            },
+            {
+                name:'当月收入',
+                type:'line',
+                smooth: true,
+                data: line3
+            }
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChart2.setOption(option);
+
+    var myChart3 = echarts.init(document.getElementById('main3'));
+    option = {
+        title : {
+            text: '收支占比',
+            x:'center'
+        },
+        tooltip : {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        toolbox: {
+            show : true,
+            feature : {
+                dataView : {show: true, readOnly: false},
+                magicType : {show: true, type: ['line', 'bar']},
+                restore : {show: true},
+                saveAsImage : {show: true}
+            }
+        },
+        legend: {
+            orient: 'vertical',
+            left: 'left',
+            data: ['总收入','总支出']
+        },
+        series : [
+            {
+                name: '访问来源',
+                type: 'pie',
+                radius : '55%',
+                center: ['50%', '60%'],
+                data:[
+                    {value:record, name:'总收入'},
+                    {value:f, name:'总支出'}
+                ],
+                itemStyle: {
+                    emphasis: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    };
+    myChart3.setOption(option);
+    var myChart4 = echarts.init(document.getElementById('main4'));
+    option = {
+        title : {
+            text: '年度收支',
+            subtext: ''
+        },
+        tooltip : {
+            trigger: 'axis'
+        },
+        legend: {
+            data:['收入','支出']
+        },
+        toolbox: {
+            show : true,
+            feature : {
+                dataView : {show: true, readOnly: false},
+                magicType : {show: true, type: ['line', 'bar']},
+                restore : {show: true},
+                saveAsImage : {show: true}
+            }
+        },
+        calculable : true,
+        xAxis : [
+            {
+                type : 'category',
+                data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
+            }
+        ],
+        yAxis : [
+            {
+                type : 'value'
+            }
+        ],
+        series : [
+            {
+                name:'收入',
+                type:'bar',
+                data:line4,
+                markPoint : {
+                    data : [
+                        {type : 'max', name: '最大值'},
+                        {type : 'min', name: '最小值'}
+                    ]
+                },
+                markLine : {
+                    data : [
+                        {type : 'average', name: '平均值'}
+                    ]
+                }
+            },
+            {
+                name:'支出',
+                type:'bar',
+                data:line5,
+                markPoint : {
+                    data : [
+                        {type : 'max', name: '最大值'},
+                        {type : 'min', name: '最小值'}
+                    ]
+                },
+                markLine : {
+                    data : [
+                        {type : 'average', name : '平均值'}
+                    ]
+                }
+            }
+        ]
+    };
+    myChart4.setOption(option);
+</script>
+</html>

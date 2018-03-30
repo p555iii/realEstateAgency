@@ -81,7 +81,10 @@
   <select id="count" resultType="int">
     SELECT count(*) FROM fin_source
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    <select id="list"  resultMap="BaseResultMap">
+      select * from fin_source where isRecord = #{record}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from fin_source
     where id = #{id,jdbcType=VARCHAR}
   </delete>

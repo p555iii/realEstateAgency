@@ -18,6 +18,7 @@
     <result column="type_name" property="clothesTypeName" jdbcType="VARCHAR"></result>
     <result column="Laundry_type" property="laundeyTypeName" jdbcType="VARCHAR"></result>
     <result column="price" property="price" jdbcType="VARCHAR"></result>
+    <result column="state" property="state" jdbcType="INTEGER"></result>
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -136,6 +137,15 @@
       </where>
 
   </select>
+    <select id="toDayLaundry" resultType="int">
+       SELECT COUNT(*) FROM ld_order_info WHERE DATE(create_time) =  CURDATE()
+    </select>
+  <select id="getCompleteSum" resultType="int">
+    select count(*) FROM ld_order_info where order_id = #{orderId} and state = 1
+  </select>
+  <select id="getThisDayOrderCount" resultType="int">
+
+  </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from ld_order_info
@@ -165,6 +175,9 @@
       <if test="createTime != null" >
         create_time,
       </if>
+      <if test="state != null" >
+        state,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -181,6 +194,9 @@
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -244,5 +260,11 @@
       laundeytype_id = #{laundeytypeId,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="completeLaunry">
+    UPDATE ld_order_info set state = 1 where id = #{id}
+  </update>
+  <update id="completeLaunryByOrderId">
+    UPDATE ld_order_info set state = 1 where order_id = #{orderId}
   </update>
 </mapper>

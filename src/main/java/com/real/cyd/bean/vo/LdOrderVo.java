@@ -20,7 +20,7 @@ public class LdOrderVo {
 
     private String name;
 
-    private Integer phone;
+    private String phone;
 
     private String dateStr;
 
@@ -42,11 +42,11 @@ public class LdOrderVo {
         this.name = name;
     }
 
-    public Integer getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Integer phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
@@ -109,6 +109,7 @@ public class LdOrderVo {
     public Date getCreateTime() {
         return createTime;
     }
+
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;

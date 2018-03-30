@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 
 /**
  * @program: realEstateAgency
@@ -135,14 +136,18 @@ public class OrderController {
 
     @RequestMapping("/getEmTime")
     @ResponseBody
-    public RespBeanOneObj getEmTime(String orderId){
-
-        return orderService.getEmTime(orderId);
+    public RespBeanOneObj getEmTime(String orderId,String id){
+        if(orderId != null){
+            return orderService.getEmTime(orderId);
+        }
+        return orderService.getEmTime(id);
     }
 
     @RequestMapping("/complete")
     @ResponseBody
-    public RespBean complete(LdOrder order){
-        return orderService.complete(order);
+    public RespBean complete(HttpSession session, LdOrder order){
+        SysUser user = (SysUser)session.getAttribute("user");
+
+        return orderService.complete(user,order);
     }
 }

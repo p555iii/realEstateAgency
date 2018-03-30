@@ -26,6 +26,53 @@
     <div class="layui-fluid">
         <div class="layui-row layui-col-space1">
             <div class="layui-col-md12">
+                <div class="layui-form-query">
+                    <form class="layui-form" id="query_form">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-mid">id：</label>
+                                <div class="layui-input-inline" style="width: 100px;">
+                                    <input type="tel" name="id" autocomplete="off" class="layui-input"/>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-mid">收入/支出：</label>
+                                <div class="layui-input-inline" style="width: 100px;">
+                                    <select name="isrecord"   lay-verType="tips" class="fsSelect" dict="record" addNull="1">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-mid">手机号：</label>
+                                <div class="layui-input-inline" style="">
+                                    <input type="tel" name="phone" autocomplete="off" class="layui-input"/>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-mid">操作用户：</label>
+                                <div class="layui-input-inline" style="">
+                                    <input type="tel" name="userName" autocomplete="off" class="layui-input"/>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-mid">创建时间：</label>
+                                <div class="layui-input-inline" style="">
+                                    <input type="text" name="time" autocomplete="off" class="layui-input fsDate" dateRange="1" placeholder=" - "/>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <div class="layui-input-inline">
+                                    <button class="layui-btn" type="button" function="query"><i class="layui-icon">&#xe615;</i>查询</button>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </form>
+                </div>
+            </div>
+        <div class="layui-row layui-col-space1">
+            <div class="layui-col-md12">
                 <div class="layui-row grid-demo">
                     <div class="layui-col-md12">
                         <button class="layui-btn" function="top" topUrl="/finRecorded/toAdd" topWidth="550px" isMaximize="0" topHeight="360px" topTitle="新增用户">

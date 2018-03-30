@@ -85,6 +85,12 @@ layui.fsDict = {
 			loadUrl : "/record",
 			labelField : "isRecord",
 			valueField : "value"
+		},source:{
+			formatType : "server",
+			loadUrl : "/source",
+		    inputs : "record:",
+			labelField : "name",
+			valueField : "id"
 		}
 
 };

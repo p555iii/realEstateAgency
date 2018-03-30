@@ -4,6 +4,7 @@ import com.real.cyd.bean.LdOrderInfo;
 import com.real.cyd.bean.vo.LdOrderInfoVo;
 import com.real.cyd.req.ld.QueryDetailsReq;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 @Mapper
@@ -25,4 +26,12 @@ public interface LdOrderInfoMapper {
     List<LdOrderInfoVo> list(QueryDetailsReq req);
 
     int count(QueryDetailsReq req);
+
+    int toDayLaundry();
+
+    void completeLaunry(@Param("id") String infoId);
+
+    int getCompleteSum(@Param("orderId")String orderId);
+
+    void completeLaunryByOrderId(@Param("orderId")String id);
 }

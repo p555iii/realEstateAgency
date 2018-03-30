@@ -34,4 +34,16 @@ public interface LdOrderMapper {
     void updatePrice(LdOrder ldOrder);
 
     void updateRealPrice(LdOrder ldOrder);
+
+    void updateEmTime(LdOrder order);
+
+    int queryOrderSum();
+
+    int queryOrderSumToDay();
+
+    int getThisDayOrderCount(@Param("day") int i);
+
+    int getThisDayLaunryCount(@Param("day") int i);
+
+    int getThisDayPriceCount(@Param("day") int i);
 }

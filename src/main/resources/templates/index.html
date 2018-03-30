@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<!--<html xmlns:shiro="http://www.pollix.at/thymeleaf/shiro" xmlns:th="http://www.w3.org/1999/xhtml">-->
-<html>
+<html xmlns:shiro="http://www.pollix.at/thymeleaf/shiro" xmlns:th="http://www.w3.org/1999/xhtml">
+
 <head>
     <meta charset="utf-8"></meta>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"></meta>
@@ -17,21 +17,55 @@
     <script type="text/javascript" src="plugins/frame/js/fsDict.js?v=1.7.1"></script>
     <script type="text/javascript" src="plugins/frame/js/fs.js?v=1.7.1"></script>
     <script type="text/javascript" src="plugins/frame/js/main.js?v=1.7.1"></script>
+    <link rel="icon" href="favicon.ico">
+<!--    <link rel="stylesheet" href="css/index.css" media="all" />-->
+    <style type="text/css">
+        .user-photo{width: 200px; height: 120px; padding:15px 0 5px;}
+        .user-photo a.img{ display: block; width:80px; height:80px; margin: 0 auto 10px;}
+        .user-photo a.img img{ display: block; border: none; width: 100%; height: 100%; border-radius: 50%; -webkit-border-radius: 50%; -moz-border-radius: 50%; border: 4px solid #44576b; box-sizing:border-box;}
+        .user-photo p{ display: block; width: 100%; height: 25px; color: #ffffff; text-align: center; font-size: 12px; white-space: nowrap;line-height: 25px; overflow: hidden;}
+
+    </style>
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
-        <div class="layui-logo">layui 后台布局</div>
+        <div class="layui-logo" >layui 后台布局</div>
+        <a href="javascript:;" class="layui-hide-xs"><div class="fsSwitchMenu"><i class="fa fa-outdent"></i></div></a>
+        <!-- 天气信息 -->
+        <div class="layui-hide-xs" pc style="margin-left: 250px;">
+            <div id="tp-weather-widget"></div>
+            <script>(function(T,h,i,n,k,P,a,g,e){g=function(){P=h.createElement(i);a=h.getElementsByTagName(i)[0];P.src=k;P.charset="utf-8";P.async=1;a.parentNode.insertBefore(P,a)};T["ThinkPageWeatherWidgetObject"]=n;T[n]||(T[n]=function(){(T[n].q=T[n].q||[]).push(arguments)});T[n].l=+new Date();if(T.attachEvent){T.attachEvent("onload",g)}else{T.addEventListener("load",g,false)}}(window,document,"script","tpwidget","//widget.seniverse.com/widget/chameleon.js"))</script>
+            <script>tpwidget("init", {
+                "flavor": "slim",
+                "location": "WX4FBXXFKE4F",
+                "geolocation": "enabled",
+                "language": "zh-chs",
+                "unit": "c",
+                "theme": "chameleon",
+                "container": "tp-weather-widget",
+                "bubble": "disabled",
+                "alarmType": "badge",
+                "color": "#FFFFFF",
+                "uid": "U9EC08A15F",
+                "hash": "039da28f5581f4bcb5c799fb4cdfb673"
+            });
+            tpwidget("show");</script>
+        </div>
         <!-- 头部区域（可配合layui已有的水平导航） -->
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
                 <a href="javascript:;">
-                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img"></img>
+                    <a href="javascript:;"><img src="images/face.jpg" class="layui-nav-img userAvatar" width="35" height="35"><cite class="adminName"><shiro:principal property="username"/></cite></a>
                     <!-- <shiro:principal property="username"/>-->
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href="">基本资料</a></dd>
-                    <dd><a href="">安全设置</a></dd>
+                    <dd><a href="/userManager/toUserInfo" id="userInfo" target="option" data-type="tabAdd" class="site-demo-active"><cite>个人资料</cite></a></dd>
+                    <dd><a href="javascript:;" data-url="page/user/changePwd.html"><i class="seraph icon-xiugai" data-icon="icon-xiugai"></i><cite>修改密码</cite></a></dd>
+                    <dd><a href="javascript:;" class="showNotice"><i class="layui-icon">&#xe645;</i><cite>系统公告</cite><span class="layui-badge-dot"></span></a></dd>
+                    <dd pc><a href="javascript:;" class="functionSetting"><i class="layui-icon">&#xe620;</i><cite>功能设定</cite><span class="layui-badge-dot"></span></a></dd>
+                    <dd pc><a href="javascript:;" class="changeSkin"><i class="layui-icon">&#xe61b;</i><cite>更换皮肤</cite></a></dd>
+                    <dd><a href="page/login/login.html" class="signOut"><i class="seraph icon-tuichu"></i><cite>退出</cite></a></dd>
                 </dl>
             </li>
             <li class="layui-nav-item"><a href="">退出</a></li>
@@ -71,28 +105,47 @@
                 <li class="layui-nav-item"><a href="">权限管理</a></li>
                 <li class="layui-nav-item"><a href="">发布商品</a></li>
             </ul>-->
-           <ul class="layui-nav layui-nav-tree"  lay-filter="test">
-               <table>
-            <tr  th:each="tree : ${session.treeMenus}">
-                <li class="layui-nav-item layui-nav-itemed">
-                    <a href="" th:href="${tree.sysPermission.url}"><label th:text="${tree.sysPermission.name}">x</label></a>
-                    <dl class="layui-nav-child">
+            <div class="user-photo">
+                <a class="img" title="我的头像" ><img src="images/face.jpg" class="userAvatar"></a>
+                <p>你好！<span class="userName">驊驊龔頾</span>, 欢迎登录</p>
+            </div>
+            <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+                <table>
+                    <tr  th:each="tree : ${session.treeMenus}">
+                        <li class="layui-nav-item layui-nav-itemed">
+                            <a href="" th:href="${tree.sysPermission.url}"><label th:text="${tree.sysPermission.name}">x</label></a>
+                            <dl class="layui-nav-child">
 
-                            <label th:each="collectc : ${tree.children}">
-                                 <dd><a th:href="${collectc.url}" target="option"><label th:text="${collectc.name}"></label></a></dd>
-                             </label>
+                                <label th:each="collectc : ${tree.children}">
+                                    <dd><a th:href="${collectc.url}" th:id="${collectc.id}" target="option" data-type="tabAdd" class="site-demo-active"><label th:text="${collectc.name}"></label></a></dd>
+                                </label>
 
-                    </dl>
-               </li>
-            </tr>
+                            </dl>
+                        </li>
+                    </tr>
                 </table>
             </ul>
         </div>
     </div>
 
-    <div class="layui-body">
+    <div class="layui-body layui-form">
+
+        <div class="layui-tab layui-tab-card fsTab" lay-filter="demo" lay-allowclose="true">
+
+            <!-- 菜单导航 -->
+            <ul class="layui-tab-title" id="fsTabMenu">
+                <li class="layui-this" lay-id="111" id="main" style="display: none;"></li>
+            </ul>
+
+                    <!-- 内容 -->
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show" >
+                    <iframe id="option" name="option"  src="head.html" style="overflow: visible;" scrolling="no" frameborder="no" width="100%" height="100%"></iframe>
+                </div>
+            </div>
+        </div>
         <!-- 内容主体区域 -->
-       <iframe id="option" name="option" src="head.html" style="overflow: visible;" scrolling="no" frameborder="no" width="100%" height="100%"></iframe>
+       <!-- <iframe id="option" name="option" src="head.html" style="overflow: visible;" scrolling="no" frameborder="no" width="100%" height="100%"></iframe>-->
     </div>
 
     <div class="layui-footer">
@@ -100,9 +153,111 @@
         © layui.com - 底部固定区域
     </div>
 </div>
-<script>
-    //JavaScript代码区域
+<script th:inline="javascript">
+    function viewInExplorerStatus() {
+       // TestService.scheduler(function(data){
+            //iframe窗
+             top.layer.open({
+                 type: 2,
+                 title:'完成订单',
+                 area: ['340px', '215px'],
+                 fixed: true, //不固定
+                 scrollbar: true,
+                 offset: 'rb', //右下角弹出
+                 time: 10000, //2秒后自动关闭
+                 maxmin: true,
+                content: 'laundryCompleteSum', //弹出的信息写在这个页面
+                end: function(){
+                //结束后操作
+            }
+       // });
+    });
+    }
 
+    $(document).ready(function(){   //ready
+        //dwr.engine.setActiveReverseAjax(true);//开启反推
+       /* window.setTimeout("aa()",1000);
+        function  aa() {
+            alert("000");
+
+        }*/
+        var data = [[${user}]];
+        $('#userInfo').attr('href','/userManager/toUserInfo?id='+data.id);
+        setInterval("viewInExplorerStatus();", 3000000);//300000
+
+        layui.use('element', function(){
+            var $ = layui.jquery
+                ,element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
+
+
+
+            //打开首页默认添加的首页
+            element.tabAdd('demo', {
+                title: '首页' //用于演示
+                ,content: '<iframe id="option" name="option" src="/main" style="overflow: visible;" scrolling="yes" frameborder="no" width="100%" height="100%"></iframe>'
+                ,id: '000' //实际使用一般是规定好的id，这里以时间戳模拟下
+            });
+            element.tabChange('demo', '000' );
+
+        });
+
+        });
+    //JavaScript代码区域
+    layui.use('element', function(){
+        var $ = layui.jquery
+            ,element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
+
+        //触发事件
+        var active = {
+            tabAdd: function(){
+                //阻止挡墙tab已经存在再次点击 再次生成一个
+                var obj = $("#fsTabMenu").children();
+                for( var i = 0; i < obj.length; i++ ) {
+
+                    if ($(this).attr("id") == $(obj[i]).attr("lay-id")) {  //如果这个tab已经存在  就直接跳转
+                        //alert($(this).attr("id")== $(obj[i]).attr("lay-id"));
+                        element.tabChange('demo', $(obj[i]).attr("lay-id"));
+                        return;
+                    }
+                }
+                //新增一个Tab项
+                element.tabAdd('demo', {
+                    title: $(this).children().text() //用于演示
+                    ,content: '<iframe id="option" name="option" src="'+$(this).attr("href")+'" style="overflow: visible;" scrolling="no" frameborder="no" width="100%" height="100%"></iframe>'
+                    ,id: $(this).attr("id") //实际使用一般是规定好的id，这里以时间戳模拟下
+                });
+                element.tabChange('demo', $(this).attr("id") );
+            }
+            ,tabDelete: function(othis){
+                //删除指定Tab项
+                element.tabDelete('demo', '44'); //删除：“商品管理”
+
+
+                othis.addClass('layui-btn-disabled');
+            }
+            ,tabChange: function(){
+                //切换到指定Tab项
+                element.tabChange('demo', '22'); //切换到：用户管理
+            }
+        };
+
+        $('.site-demo-active').on('click', function(){
+            var othis = $(this), type = othis.data('type');
+            active[type] ? active[type].call(this, othis) : '';
+        });
+        $('#main').on('click', function(){
+            element.tabChange('demo', '000');
+        });
+
+        //Hash地址的定位
+        var layid = location.hash.replace(/^#test=/, '');
+        element.tabChange('test', layid);
+
+        element.on('tab(test)', function(elem){
+            location.hash = 'test='+ $(this).attr('lay-id');
+        });
+
+    });
 </script>
 </body>
 </html>

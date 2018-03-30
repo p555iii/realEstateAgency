@@ -40,13 +40,14 @@ public class LoginController {
     private SysUserMapper userMapper;
     // 登录提交地址和applicationontext-shiro.xml配置的loginurl一致。 (配置文件方式的说法)
     @RequestMapping(value="/login")
-    public String loginUser(String username,String password,HttpSession session,HttpServletRequest request) {
+    public String loginUser(String username,String password,HttpSession session,HttpServletRequest request,Model model) {
         UsernamePasswordToken usernamePasswordToken=new UsernamePasswordToken(username,password);
         Subject subject = SecurityUtils.getSubject();
         try {
             subject.login(usernamePasswordToken);   //完成登录
             SysUser user=(SysUser) subject.getPrincipal();
             session.setAttribute("user", user);
+            model.addAttribute("user",user);
             /**
              * 保存登录信息
              */

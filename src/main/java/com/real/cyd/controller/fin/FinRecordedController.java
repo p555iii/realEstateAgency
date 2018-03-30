@@ -1,10 +1,8 @@
 package com.real.cyd.controller.fin;
 
 import com.github.pagehelper.PageHelper;
-import com.real.cyd.bean.FinRecorded;
-import com.real.cyd.bean.FinSource;
-import com.real.cyd.bean.PageBean;
-import com.real.cyd.bean.RespBean;
+import com.real.cyd.bean.*;
+import com.real.cyd.req.fin.FinRecordReq;
 import com.real.cyd.resp.RespBeanOneObj;
 import com.real.cyd.service.FinRecordedService;
 import com.real.cyd.service.FinSourceService;
@@ -15,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 
 /**
  * @program: realEstateAgency
@@ -36,10 +35,10 @@ public class FinRecordedController {
     }
     @RequestMapping("/list")
     @ResponseBody
-    public RespBean clothes(PageBean page){
+    public RespBean clothes(PageBean page,FinRecordReq record){
         PageHelper.startPage(page.getPageNum(),page.getPageSize());
         PageHelper.orderBy("createTime DESC");
-        RespBean client =finRecordedService.queryList();
+        RespBean client =finRecordedService.queryList(record);
         return client;
     }
 
@@ -52,7 +51,9 @@ public class FinRecordedController {
     @RequestMapping("/add")
     @ExceptionHandler(NumberFormatException.class)
     @ResponseBody
-    public RespBean add(FinRecorded bean){
+    public RespBean add(HttpSession session,FinRecorded bean){
+        SysUser user = (SysUser) session.getAttribute("user");
+        bean.setUserid(user.getId());
         finRecordedService.insert(bean);
         RespBean users = new RespBean();
         users.setErrorNo("0");

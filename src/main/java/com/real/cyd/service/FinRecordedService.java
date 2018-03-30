@@ -2,6 +2,7 @@ package com.real.cyd.service;
 
 import com.real.cyd.bean.FinRecorded;
 import com.real.cyd.bean.RespBean;
+import com.real.cyd.req.fin.FinRecordReq;
 import com.real.cyd.resp.RespBeanOneObj;
 
 /**
@@ -11,7 +12,7 @@ import com.real.cyd.resp.RespBeanOneObj;
  * @create: 2018-03-25 20:53
  **/
 public interface FinRecordedService {
-    RespBean queryList();
+    RespBean queryList(FinRecordReq record);
 
     void insert(FinRecorded bean);
 

@@ -44,6 +44,16 @@ public class FinRecordedVo {
 
     private String sourceName;
 
+    private String orderId;
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
     public String getSourceName() {
         return sourceName;
     }

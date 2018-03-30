@@ -7,6 +7,8 @@ import com.real.cyd.mapper.*;
 import com.real.cyd.req.ld.QueryDetailsReq;
 import com.real.cyd.req.ld.QueryOrderReq;
 import com.real.cyd.resp.RespBeanOneObj;
+import com.real.cyd.service.FinRecordedService;
+import com.real.cyd.service.LdOrderExecutionService;
 import com.real.cyd.service.OrderService;
 import com.real.cyd.utils.ToolsUtils;
 import org.springframework.stereotype.Service;
@@ -40,6 +42,12 @@ public class OrderServiceImpl implements OrderService {
     private LdLaundryTypeMapper ldLaundryTypeMapper;
     @Resource
     private LdIntegralMapper ldIntegralMapper;
+    @Resource
+    private FinRecordedService finRecordedService;
+    @Resource
+    private FinRecordedMapper finRecordedMapper;
+    @Resource
+    private LdOrderExecutionService ldOrderExecutionService;
 
     @Override
     public RespBean queryList(QueryOrderReq req) {
@@ -177,6 +185,7 @@ public class OrderServiceImpl implements OrderService {
         if(bean.getCreateTime() == null){
             bean.setCreateTime(new Date());
         }
+        bean.setState(0);
         ldOrderInfoMapper.insertSelective(bean);
         //修改总件数
         ldOrderMapper.updateOrderIdSum(bean);
@@ -243,9 +252,35 @@ public class OrderServiceImpl implements OrderService {
         ldOrderMapper.updateRealPrice(ldOrder);
         return ToolsUtils.getRespOneObj(ldOrder);
     }
-
+    //完成订单
     @Override
-    public RespBean complete(LdOrder order) {
-        return null;
+    public RespBean complete(SysUser user,LdOrder order) {
+        //入账务表   默认是洗衣收入
+        FinRecorded recorded = new FinRecorded();
+        recorded.setMoney(order.getRealPrice());
+        recorded.setUserid(user.getId());
+        recorded.setClientid(order.getClientId());
+        recorded.setRecord(0);
+        recorded.setSourceid("5c8a1e64-8efc-445e-a0e0-bb85da1f4c23");
+        recorded.setOrderId(order.getId());
+        FinRecorded record = finRecordedMapper.queryOrderId(order);
+        if(record == null){
+            finRecordedService.insert(recorded);
+        }else{
+            finRecordedService.update(recorded);
+
+        }
+        ldOrderMapper.updateEmTime(order);
+        order = ldOrderMapper.selectByPrimaryKey(order.getId());
+        //添加到洗衣处理表
+        LdOrderexecution bean = new LdOrderexecution();
+        bean.setId(order.getId());
+        bean.setEstimatedTime(order.getEstimatedTime());
+        bean.setClientId(order.getClientId());
+        bean.setSum(order.getSum());
+        ldOrderExecutionService.insert(bean);
+        RespBean res = new RespBean();
+        res.setErrorNo("0");
+        return res;
     }
 }

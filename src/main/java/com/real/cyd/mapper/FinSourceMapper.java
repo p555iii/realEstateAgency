@@ -25,4 +25,6 @@ public interface FinSourceMapper {
     List<FinSource> queryList();
 
     int count();
+
+    List<FinSource> list(@Param("record") String record);
 }

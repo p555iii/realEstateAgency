@@ -17,6 +17,16 @@ public class LdOrderInfo {
 
     private Integer sum;
 
+    private Integer state;
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
     public Integer getSum() {
         return sum;
     }

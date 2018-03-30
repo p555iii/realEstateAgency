@@ -26,23 +26,30 @@
 	<form class="layui-form">
 	  <div class="layui-form-item">
 
-			  <label class="layui-form-mid">财务名称：</label>
+			  <label class="layui-form-mid">账务数：</label>
 			  <div class="layui-input-inline">
-				  <input type="text" name="name" required="" lay-verType="tips" lay-verify="required" placeholder="请输入衣物名" autocomplete="off" class="layui-input"/>
+				  <input type="text" name="money" required="" lay-verType="tips" lay-verify="required" placeholder="请输入收入/支出数" autocomplete="off" class="layui-input"/>
 			  </div>
 		  </div>
 		  <div class="layui-form-item">
 			  <label class="layui-form-mid">收入/支出：</label>
 			  <div class="layui-input-inline" style="width: 100px;">
-				  <select name="isrecord"   lay-verType="tips" class="fsSelect" dict="record" addNull="1">
+				  <select name="record" id="isrecord"  lay-verType="tips" lay-filter="isrecord" class="fsSelect" dict="record" addNull="1" childrenSelectId="source">
 				  </select>
 			  </div>
 		  </div>
+		<div class="layui-form-item">
+			<label class="layui-form-mid">账务类型：</label>
+			<div class="layui-input-inline" style="width: 100px;">
+				<select name="sourceid"  id="source"  lay-verType="tips" lay-filter="source" class="fsSelect" isLoad="0" dict="source" addNull="1">
+				</select>
+			</div>
+		</div>
 
 
 	  <hr/>
 	  <div class="layui-form-item" style="text-align: center;">
-	      <button class="layui-btn" lay-submit="" lay-filter="save" url="/finSource/add">新增</button>
+	      <button class="layui-btn" lay-submit="" lay-filter="save" url="/finRecorded/add">新增</button>
 	      <button type="button" class="layui-btn layui-btn-primary" function="close">关闭</button>
 	  </div>
 	</form>

@@ -28,6 +28,16 @@ public class FinRecorded {
 
     private String dateStr;
 
+    private String orderId;
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
     public String getDateStr() {
         return dateStr;
     }

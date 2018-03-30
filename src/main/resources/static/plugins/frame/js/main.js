@@ -32,12 +32,12 @@ layui.use(['fsMenu','layer','fsTab','fsCommon','fsConfig'], function(){
 		if(!$.isEmpty(hash) && hash.length>1){
 			var menuId = hash.substring(1);
 			//获取layId
-			var dom = $('#fsLeftMenu a[menuId="'+ menuId +'"]').parent();
-			if(dom.length>0){
+			var dom = $('#fsLeftMenu').parent();
+			//if(dom.length>0){
 				fsTab.add(dom);
-				fsTab.menuSelectCss(dom.attr("lay-id"));
+				//fsTab.menuSelectCss(dom.attr("lay-id"));
 				
-			}
+			//}
 		}
 	}
 	

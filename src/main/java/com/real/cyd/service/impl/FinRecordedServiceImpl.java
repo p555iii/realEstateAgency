@@ -4,6 +4,7 @@ import com.real.cyd.bean.FinRecorded;
 import com.real.cyd.bean.RespBean;
 import com.real.cyd.bean.vo.FinRecordedVo;
 import com.real.cyd.mapper.FinRecordedMapper;
+import com.real.cyd.req.fin.FinRecordReq;
 import com.real.cyd.resp.RespBeanOneObj;
 import com.real.cyd.service.FinRecordedService;
 import com.real.cyd.utils.ToolsUtils;
@@ -25,10 +26,17 @@ import java.util.UUID;
 public class FinRecordedServiceImpl implements FinRecordedService{
     @Resource
     private FinRecordedMapper finRecordedMapper;
+
     @Override
-    public RespBean queryList() {
-        List<FinRecordedVo> list = finRecordedMapper.queryList();
-        int count = finRecordedMapper.count();
+    public RespBean queryList(FinRecordReq record) {
+        if(record.getTime()!= null && !record.getTime().equals("")){
+            String[] timeSplit = ToolsUtils.getTimeSplit(record.getTime());
+            record.setStartTime(timeSplit[0]);
+            record.setEndTime(timeSplit[1]);
+        }
+
+        List<FinRecordedVo> list = finRecordedMapper.queryList(record);
+        int count = finRecordedMapper.count(record);
         for(FinRecordedVo bean:list){
             if(bean.getCreatetime() != null){
                 bean.setDateStr(ToolsUtils.getDateStr(bean.getCreatetime()));

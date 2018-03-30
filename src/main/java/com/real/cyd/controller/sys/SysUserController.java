@@ -10,6 +10,7 @@ import com.real.cyd.resp.vo.UserRoleInfoVo;
 import com.real.cyd.service.UserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -44,6 +45,7 @@ public class SysUserController {
     }
 
     @RequestMapping("/addUser")
+    @ExceptionHandler(NumberFormatException.class)
     @ResponseBody
     public RespBean addUser(SysUser user){
         userService.insertUser(user);
@@ -96,5 +98,10 @@ public class SysUserController {
         RespBean users = new RespBean();
         users.setErrorNo("0");
         return users;
+    }
+
+    @RequestMapping("/toUserInfo")
+    public String toUserInfo(){
+        return "userManager/userInfo";
     }
 }
