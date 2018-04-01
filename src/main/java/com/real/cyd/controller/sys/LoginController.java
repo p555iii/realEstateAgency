@@ -44,6 +44,7 @@ public class LoginController {
         UsernamePasswordToken usernamePasswordToken=new UsernamePasswordToken(username,password);
         Subject subject = SecurityUtils.getSubject();
         try {
+            SysUser me = null;
             subject.login(usernamePasswordToken);   //完成登录
             SysUser user=(SysUser) subject.getPrincipal();
             session.setAttribute("user", user);
@@ -51,7 +52,7 @@ public class LoginController {
             /**
              * 保存登录信息
              */
-            SysUser me = null;
+
             try{
                 me =  ShiroUtil.getSessionUser();
             }catch (UnavailableSecurityManagerException e){

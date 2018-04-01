@@ -130,4 +130,10 @@ public class UserServiceImpl implements UserService{
         userMapper.addUserRole(vo);
     }
 
+    @Override
+    @Transactional
+    public void upload(String id, String s) {
+        userMapper.upload(id,s);
+    }
+
 }

@@ -170,10 +170,17 @@
             <version>1.1.23</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
         <dependency>
-            <groupId>com.github.abel533</groupId>
-            <artifactId>ECharts</artifactId>
-            <version>3.0.0</version>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.6</version>
+        </dependency>
+        <!-- 用于生成二维码 -->
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>3.3.0</version>
         </dependency>
     </dependencies>
 

@@ -9,6 +9,7 @@
     <result column="salt" property="salt" jdbcType="VARCHAR" />
     <result column="state" property="state" jdbcType="INTEGER" />
     <result column="createTime" property="createTime" jdbcType="DATE" />
+    <result column="imgurl" property="imgurl" jdbcType="VARCHAR"></result>
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -69,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, username, password, nickName, salt, state, createTime
+    id, username, password, nickName, salt, state, createTime,imgurl
   </sql>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
@@ -257,8 +258,11 @@
       createTime = #{createtime,jdbcType=DATE}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+    <update id="upload">
+      UPDATE sys_user set imgurl = #{url} where id = #{id}
+    </update>
 
-  <select id="getUserRoleInfo" parameterType="com.real.cyd.bean.SysUser" resultType="com.real.cyd.resp.vo.UserRoleInfoVo">
+    <select id="getUserRoleInfo" parameterType="com.real.cyd.bean.SysUser" resultType="com.real.cyd.resp.vo.UserRoleInfoVo">
     SELECT u.id userId,r.id roleId,r.roleName FROM sys_user u LEFT JOIN sys_userrole ur ON u.id = ur.user_Id LEFT JOIN sys_role r ON r.id = ur.role_Id  WHERE  u.id = #{id}
   </select>
 

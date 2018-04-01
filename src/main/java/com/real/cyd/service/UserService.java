@@ -24,4 +24,6 @@ public interface UserService {
     RespBeanOneObj getUserRoleInfo(String id);
 
     void updateUserRole(UserRoleInfoVo vo);
+
+    void upload(String id, String s);
 }

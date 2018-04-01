@@ -19,6 +19,16 @@ public class SysUser {
 
     private String dateStr;
 
+    private String imgurl;
+
+    public String getImgurl() {
+        return imgurl;
+    }
+
+    public void setImgurl(String imgurl) {
+        this.imgurl = imgurl;
+    }
+
     public String getId() {
         return id;
     }

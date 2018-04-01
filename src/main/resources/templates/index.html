@@ -30,7 +30,7 @@
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
-        <div class="layui-logo" >layui 后台布局</div>
+        <div class="layui-logo" >洗衣店管理系统后台</div>
         <a href="javascript:;" class="layui-hide-xs"><div class="fsSwitchMenu"><i class="fa fa-outdent"></i></div></a>
         <!-- 天气信息 -->
         <div class="layui-hide-xs" pc style="margin-left: 250px;">
@@ -56,16 +56,16 @@
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
                 <a href="javascript:;">
-                    <a href="javascript:;"><img src="images/face.jpg" class="layui-nav-img userAvatar" width="35" height="35"><cite class="adminName"><shiro:principal property="username"/></cite></a>
+                    <a href="javascript:;"><img th:src="${user.imgurl}" id="head" class="layui-nav-img userAvatar" width="35" height="35"><cite class="adminName"><shiro:principal property="username"/></cite></a>
                     <!-- <shiro:principal property="username"/>-->
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href="/userManager/toUserInfo" id="userInfo" target="option" data-type="tabAdd" class="site-demo-active"><cite>个人资料</cite></a></dd>
+                    <dd><a href="/userManager/toUserInfo" id="userInfo" target="option" data-type="tabAdd" class="site-demo-active"><cite>上传头像</cite></a></dd>
                     <dd><a href="javascript:;" data-url="page/user/changePwd.html"><i class="seraph icon-xiugai" data-icon="icon-xiugai"></i><cite>修改密码</cite></a></dd>
                     <dd><a href="javascript:;" class="showNotice"><i class="layui-icon">&#xe645;</i><cite>系统公告</cite><span class="layui-badge-dot"></span></a></dd>
                     <dd pc><a href="javascript:;" class="functionSetting"><i class="layui-icon">&#xe620;</i><cite>功能设定</cite><span class="layui-badge-dot"></span></a></dd>
                     <dd pc><a href="javascript:;" class="changeSkin"><i class="layui-icon">&#xe61b;</i><cite>更换皮肤</cite></a></dd>
-                    <dd><a href="page/login/login.html" class="signOut"><i class="seraph icon-tuichu"></i><cite>退出</cite></a></dd>
+                    <dd><a href="/logout" class="signOut"><i class="seraph icon-tuichu"></i><cite>退出</cite></a></dd>
                 </dl>
             </li>
             <li class="layui-nav-item"><a href="">退出</a></li>
@@ -106,8 +106,8 @@
                 <li class="layui-nav-item"><a href="">发布商品</a></li>
             </ul>-->
             <div class="user-photo">
-                <a class="img" title="我的头像" ><img src="images/face.jpg" class="userAvatar"></a>
-                <p>你好！<span class="userName">驊驊龔頾</span>, 欢迎登录</p>
+                <a class="img" title="我的头像" ><img th:src="${user.imgurl}" id="left" class="userAvatar"></a>
+                <p>你好！<span class="userName"><shiro:principal property="username"/></span>, 欢迎登录</p>
             </div>
             <ul class="layui-nav layui-nav-tree"  lay-filter="test">
                 <table>
@@ -140,7 +140,7 @@
                     <!-- 内容 -->
             <div class="layui-tab-content">
                 <div class="layui-tab-item layui-show" >
-                    <iframe id="option" name="option"  src="head.html" style="overflow: visible;" scrolling="no" frameborder="no" width="100%" height="100%"></iframe>
+                    <iframe id="option" name="option"  src="" style="overflow: visible;" scrolling="no" frameborder="no" width="100%" height="100%"></iframe>
                 </div>
             </div>
         </div>
@@ -150,7 +150,7 @@
 
     <div class="layui-footer">
         <!-- 底部固定区域 -->
-        © layui.com - 底部固定区域
+        © 2018-cyd 后台管理
     </div>
 </div>
 <script th:inline="javascript">

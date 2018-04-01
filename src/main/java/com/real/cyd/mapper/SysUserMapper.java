@@ -35,4 +35,6 @@ public interface SysUserMapper {
     void deleteUserRole(UserRoleInfoVo vo);
 
     void addUserRole(UserRoleInfoVo vo);
+
+    void upload(@Param("id") String id,@Param("url") String s);
 }

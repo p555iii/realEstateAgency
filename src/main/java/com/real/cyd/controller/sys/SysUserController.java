@@ -10,6 +10,7 @@ import com.real.cyd.resp.vo.UserRoleInfoVo;
 import com.real.cyd.service.UserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -101,7 +102,9 @@ public class SysUserController {
     }
 
     @RequestMapping("/toUserInfo")
-    public String toUserInfo(){
+    public String toUserInfo(String id, Model model){
+        RespBeanOneObj userInfo = userService.getUserInfo(id);
+        model.addAttribute("user",(SysUser)userInfo.getResults().getData());
         return "userManager/userInfo";
     }
 }
