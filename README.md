@@ -1,3 +1,3 @@
 # realEstateAgency
-正在开发的基于java 的基础权限框架  
-使用spring boot  + mybatis + layerUi
+正在开发的基于java 的洗衣店管理系统
+使用spring boot  + mybatis + layUi
