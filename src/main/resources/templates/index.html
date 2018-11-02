@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8"></meta>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"></meta>
-    <title>layout 后台大布局 - Layui</title>
+    <title>洗衣店管理系统</title>
     <script src="https://cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
     <link href="https://cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="plugins/layui/css/layui.css" media="all"/>
@@ -33,7 +33,7 @@
         <div class="layui-logo" >洗衣店管理系统后台</div>
         <a href="javascript:;" class="layui-hide-xs"><div class="fsSwitchMenu"><i class="fa fa-outdent"></i></div></a>
         <!-- 天气信息 -->
-        <div class="layui-hide-xs" pc style="margin-left: 250px;">
+      <!--  <div class="layui-hide-xs" pc style="margin-left: 250px;">
             <div id="tp-weather-widget"></div>
             <script>(function(T,h,i,n,k,P,a,g,e){g=function(){P=h.createElement(i);a=h.getElementsByTagName(i)[0];P.src=k;P.charset="utf-8";P.async=1;a.parentNode.insertBefore(P,a)};T["ThinkPageWeatherWidgetObject"]=n;T[n]||(T[n]=function(){(T[n].q=T[n].q||[]).push(arguments)});T[n].l=+new Date();if(T.attachEvent){T.attachEvent("onload",g)}else{T.addEventListener("load",g,false)}}(window,document,"script","tpwidget","//widget.seniverse.com/widget/chameleon.js"))</script>
             <script>tpwidget("init", {
@@ -51,7 +51,7 @@
                 "hash": "039da28f5581f4bcb5c799fb4cdfb673"
             });
             tpwidget("show");</script>
-        </div>
+        </div>-->
         <!-- 头部区域（可配合layui已有的水平导航） -->
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
@@ -62,13 +62,10 @@
                 <dl class="layui-nav-child">
                     <dd><a href="/userManager/toUserInfo" id="userInfo" target="option" data-type="tabAdd" class="site-demo-active"><cite>上传头像</cite></a></dd>
                     <dd><a href="javascript:;" data-url="page/user/changePwd.html"><i class="seraph icon-xiugai" data-icon="icon-xiugai"></i><cite>修改密码</cite></a></dd>
-                    <dd><a href="javascript:;" class="showNotice"><i class="layui-icon">&#xe645;</i><cite>系统公告</cite><span class="layui-badge-dot"></span></a></dd>
-                    <dd pc><a href="javascript:;" class="functionSetting"><i class="layui-icon">&#xe620;</i><cite>功能设定</cite><span class="layui-badge-dot"></span></a></dd>
-                    <dd pc><a href="javascript:;" class="changeSkin"><i class="layui-icon">&#xe61b;</i><cite>更换皮肤</cite></a></dd>
                     <dd><a href="/logout" class="signOut"><i class="seraph icon-tuichu"></i><cite>退出</cite></a></dd>
                 </dl>
             </li>
-            <li class="layui-nav-item"><a href="">退出</a></li>
+            <li class="layui-nav-item"><a href="/logout">退出</a></li>
         </ul>
     </div>
 
@@ -166,7 +163,7 @@
                  offset: 'rb', //右下角弹出
                  time: 10000, //2秒后自动关闭
                  maxmin: true,
-                content: 'laundryCompleteSum', //弹出的信息写在这个页面
+                 content: 'laundryCompleteSum', //弹出的信息写在这个页面
                 end: function(){
                 //结束后操作
             }
@@ -183,7 +180,7 @@
         }*/
         var data = [[${user}]];
         $('#userInfo').attr('href','/userManager/toUserInfo?id='+data.id);
-        setInterval("viewInExplorerStatus();", 3000000);//300000
+        setInterval("viewInExplorerStatus();", 300000);//300000
 
         layui.use('element', function(){
             var $ = layui.jquery

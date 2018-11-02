@@ -1,5 +1,6 @@
 package com.real.cyd.mapper;
 
+import com.real.cyd.bean.LdClient;
 import com.real.cyd.bean.LdLaundryType;
 import com.real.cyd.bean.LdOrder;
 import com.real.cyd.bean.LdOrderInfo;
@@ -37,7 +38,7 @@ public interface LdOrderMapper {
 
     void updateEmTime(LdOrder order);
 
-    int queryOrderSum();
+    int queryOrderSum(@Param("startTime")String startTime,@Param("endTime")String endTime);
 
     int queryOrderSumToDay();
 
@@ -46,4 +47,20 @@ public interface LdOrderMapper {
     int getThisDayLaunryCount(@Param("day") int i);
 
     int getThisDayPriceCount(@Param("day") int i);
+
+    List<LdOrderVo> queryReservationList(QueryOrderReq req);
+
+    int reservationCount();
+
+    int deleteReservation(String s);
+
+    LdOrder selectByPrimaryKeyRe(String id);
+
+    int addReservation(LdOrder order);
+
+    void updateReservationSum(LdOrderInfo orderInfo);
+
+    void updateReservationPrice(LdOrder ldOrder);
+
+    int getCompleteOrder();
 }

@@ -33,4 +33,18 @@ public interface OrderService {
     RespBeanOneObj getEmTime(String orderId);
 
     RespBean complete(SysUser user,LdOrder order);
+
+    RespBean queryReservationList(QueryOrderReq req);
+
+    RespBean deleteReservation(String id);
+
+    RespBean reservationDetails(QueryDetailsReq req);
+
+    RespBean toOrder(String id,String username);
+
+    LdOrder addReservation(String phone);
+
+    void addReservationInfo(LdOrderInfo orderInfo);
+
+    RespBean infoDelete(String id,String orderId);
 }

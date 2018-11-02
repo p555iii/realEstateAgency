@@ -26,4 +26,6 @@ public interface LdLaundryTypeMapper {
     List<LdLaundryType> queryList();
 
     int count();
+
+    List<LdLaundryType> list();
 }

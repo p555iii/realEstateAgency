@@ -172,7 +172,7 @@
   <insert id="insert" parameterType="com.real.cyd.bean.SysRole" >
     insert into sys_role (id, roleName, createTime
       )
-    values (#{id,jdbcType=VARCHAR}, #{rolename,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+    values (#{id,jdbcType=VARCHAR}, #{roleName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.real.cyd.bean.SysRole" >
@@ -181,7 +181,7 @@
       <if test="id != null" >
         id,
       </if>
-      <if test="rolename != null" >
+      <if test="roleName != null" >
         roleName,
       </if>
       <if test="createTime != null" >
@@ -192,8 +192,8 @@
       <if test="id != null" >
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="rolename != null" >
-        #{rolename,jdbcType=VARCHAR},
+      <if test="roleName != null" >
+        #{roleName,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
@@ -207,8 +207,8 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=VARCHAR},
       </if>
-      <if test="record.rolename != null" >
-        roleName = #{record.rolename,jdbcType=VARCHAR},
+      <if test="record.roleName != null" >
+        roleName = #{record.roleName,jdbcType=VARCHAR},
       </if>
       <if test="record.createTime != null" >
         createTime = #{record.createTime,jdbcType=TIMESTAMP},
@@ -221,7 +221,7 @@
   <update id="updateByExample" parameterType="map" >
     update sys_role
     set id = #{record.id,jdbcType=VARCHAR},
-      roleName = #{record.rolename,jdbcType=VARCHAR},
+      roleName = #{record.roleName,jdbcType=VARCHAR},
       createTime = #{record.createTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -230,8 +230,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.real.cyd.bean.SysRole" >
     update sys_role
     <set >
-      <if test="rolename != null" >
-        roleName = #{rolename,jdbcType=VARCHAR},
+      <if test="roleName != null" >
+        roleName = #{roleName,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         createTime = #{createTime,jdbcType=TIMESTAMP},
@@ -241,7 +241,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.real.cyd.bean.SysRole" >
     update sys_role
-    set roleName = #{rolename,jdbcType=VARCHAR},
+    set roleName = #{roleName,jdbcType=VARCHAR},
       createTime = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>

@@ -261,12 +261,18 @@
     <update id="upload">
       UPDATE sys_user set imgurl = #{url} where id = #{id}
     </update>
+    <update id="updateState" parameterType="com.real.cyd.bean.SysUser">
+      UPDATE sys_user set state = #{state} where id = #{id}
+    </update>
 
     <select id="getUserRoleInfo" parameterType="com.real.cyd.bean.SysUser" resultType="com.real.cyd.resp.vo.UserRoleInfoVo">
     SELECT u.id userId,r.id roleId,r.roleName FROM sys_user u LEFT JOIN sys_userrole ur ON u.id = ur.user_Id LEFT JOIN sys_role r ON r.id = ur.role_Id  WHERE  u.id = #{id}
   </select>
+    <select id="selectByUsername" resultType="com.real.cyd.bean.SysUser">
+      select * from sys_user where username = #{username}
+    </select>
 
-  <delete id="deleteUserRole" parameterType="com.real.cyd.resp.vo.UserRoleInfoVo">
+    <delete id="deleteUserRole" parameterType="com.real.cyd.resp.vo.UserRoleInfoVo">
     DELETE FROM sys_userrole WHERE user_id = #{userId}
   </delete>
   <insert id="addUserRole" parameterType="com.real.cyd.resp.vo.UserRoleInfoVo">

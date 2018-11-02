@@ -37,4 +37,8 @@ public interface SysUserMapper {
     void addUserRole(UserRoleInfoVo vo);
 
     void upload(@Param("id") String id,@Param("url") String s);
+
+    SysUser selectByUsername(@Param("username")String username);
+
+    void updateState(SysUser user);
 }

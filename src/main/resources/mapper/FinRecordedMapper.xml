@@ -136,8 +136,20 @@
      SELECT ifnull(SUM(money),0) FROM fin_recorded WHERE money IS NOT NULL AND DATE(createTime) =  CURDATE() AND  record = 1
   </select>
   <select id="countRecord" resultType="decimal">
-     SELECT ((SELECT IFNULL(SUM(money),0) record FROM fin_recorded WHERE money IS NOT NULL  AND  record = 0) -
- (SELECT IFNULL(SUM(money),0) FROM fin_recorded WHERE money IS NOT NULL AND  record = 1) ) money
+     SELECT ((SELECT IFNULL(SUM(money),0) record FROM fin_recorded WHERE money IS NOT NULL  AND  record = 0  <if test="startTime != null and startTime != ''">
+    AND CREATEtime  &gt;= #{startTime}
+  </if>
+    <if test="endTime != null and endTime != ''">
+      AND CREATEtime  &lt;= #{endTime}
+    </if>
+) -
+ (SELECT IFNULL(SUM(money),0) FROM fin_recorded WHERE money IS NOT NULL AND  record = 1   <if test="startTime != null and startTime != ''">
+    AND CREATEtime  &gt;= #{startTime}
+  </if>
+    <if test="endTime != null and endTime != ''">
+      AND CREATEtime  &lt;= #{endTime}
+    </if>
+) ) money
   </select>
   <select id="queryOrderId" resultType="com.real.cyd.bean.FinRecorded"
           parameterType="com.real.cyd.bean.LdOrder">

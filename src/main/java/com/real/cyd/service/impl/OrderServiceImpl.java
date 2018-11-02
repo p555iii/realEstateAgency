@@ -48,6 +48,8 @@ public class OrderServiceImpl implements OrderService {
     private FinRecordedMapper finRecordedMapper;
     @Resource
     private LdOrderExecutionService ldOrderExecutionService;
+    @Resource
+    private SysUserMapper sysUserMapper;
 
     @Override
     public RespBean queryList(QueryOrderReq req) {
@@ -76,6 +78,33 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public RespBean queryReservationList(QueryOrderReq req) {
+        if(req.getTime()!= null && !req.getTime().equals("")){
+            String[] timeSplit = ToolsUtils.getTimeSplit(req.getTime());
+            req.setStartTime(timeSplit[0]);
+            req.setEndTime(timeSplit[1]);
+        }
+        if(req.getEmTime()!= null && !req.getEmTime().equals("")){
+            String[] timeSplit = ToolsUtils.getTimeSplit(req.getEmTime());
+            req.setEmStartTime(timeSplit[0]);
+            req.setEmEndTime(timeSplit[1]);
+        }
+
+        List<LdOrderVo> list = ldOrderMapper.queryReservationList(req);
+        int count = ldOrderMapper.reservationCount();
+        for(LdOrderVo bean:list){
+            if(bean.getCreateTime() != null){
+                bean.setDateStr(ToolsUtils.getDateStr(bean.getCreateTime()));
+            }
+            if(bean.getEstimatedTime() != null){
+                bean.setEmDateStr(ToolsUtils.getDateStr(bean.getEstimatedTime()));
+            }
+        }
+        return ToolsUtils.getRespBean(list,count);
+    }
+
+
+    @Override
     public RespBean insert(LdOrder bean) {
         RespBean res = new RespBean();
         res.setErrorNo("1");
@@ -99,6 +128,7 @@ public class OrderServiceImpl implements OrderService {
             return res;
         }
         bean.setClientId(client.getId());
+        System.out.println(bean.getUserId()+"------------");
         int i = ldOrderMapper.insertSelective(bean);
         if(i != 1){
             res.setErrorInfo("添加失败");
@@ -127,6 +157,63 @@ public class OrderServiceImpl implements OrderService {
         }
         return res;
     }
+
+
+    @Override
+    public RespBean infoDelete(String id,String orderId) {
+        LdOrder order = ldOrderMapper.selectByPrimaryKey(orderId);
+        LdOrderInfo bean = ldOrderInfoMapper.selectByPrimaryKey(id);
+        if(ToolsUtils.IsNull(id)){
+            return null;
+        }
+        RespBean res = new RespBean();
+        int result = 0;
+        String[] split = id.split(",");
+        for(String s:split){
+            int i = ldOrderInfoMapper.deleteByPrimaryKey(s);
+
+            //修改用户积分
+            LdClothesType ldClothesType = ldClothesTypeMapper.selectByPrimaryKey(bean.getClothestypeId());
+            LdLaundryType ldLaundryType = ldLaundryTypeMapper.selectByPrimaryKey(bean.getLaundeytypeId());
+            BigDecimal price = ldClothesType.getPrice().add(ldLaundryType.getPrice());
+            order.setSum(order.getSum() - 1);
+            order.setPrice(order.getPrice().subtract(price));
+            ldOrderMapper.updateByPrimaryKeySelective(order);
+
+            if(i == 0){
+                result++;
+            }
+        }
+        if(result == 0){
+            res.setErrorNo("0");
+        }
+        return res;
+    }
+
+
+
+    @Override
+    public RespBean deleteReservation(String id) {
+        if(ToolsUtils.IsNull(id)){
+            return null;
+        }
+        RespBean res = new RespBean();
+        int result = 0;
+        String[] split = id.split(",");
+        for(String s:split){
+            int i = ldOrderMapper.deleteReservation(s);
+            if(i == 0){
+                result++;
+            }
+        }
+        if(result == 0){
+            res.setErrorNo("0");
+        }
+        return res;
+    }
+
+
+
 
     @Override
     public RespBeanOneObj getInfo(String id) {
@@ -157,6 +244,78 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public RespBean reservationDetails(QueryDetailsReq req) {
+        if(req.getTime()!= null && !req.getTime().equals("")){
+            String[] timeSplit = ToolsUtils.getTimeSplit(req.getTime());
+            req.setStartTime(timeSplit[0]);
+            req.setEndTime(timeSplit[1]);
+        }
+        List<LdOrderInfoVo> list = ldOrderInfoMapper.reservationList(req);
+        System.out.println(req.getId());
+        int count = ldOrderInfoMapper.reservationCount(req);
+        for(LdOrderInfoVo bean : list){
+            if(bean.getCreateTime() != null){
+                bean.setDateStr(ToolsUtils.getDateStr(bean.getCreateTime()));
+            }
+        }
+        return ToolsUtils.getRespBean(list,count);
+    }
+
+    @Override
+    @Transactional
+    public RespBean toOrder(String id,String username) {
+
+        RespBean res = new RespBean();
+        res.setErrorNo("1");
+
+        if(ToolsUtils.IsNull(id)){
+            res.setErrorInfo("id为空");
+            return  res;
+        }
+        LdOrder ldOrder = ldOrderMapper.selectByPrimaryKey(id);
+        if(ldOrder != null && !ldOrder.getId().equals("")){
+            res.setErrorInfo("该预定已经提交无需再次提交");
+            return res;
+        }
+        LdOrder order = ldOrderMapper.selectByPrimaryKeyRe(id); //查预定订单
+        if(order==null || order.getId().equals("")){
+            res.setErrorInfo("该预定不存在");
+            return res;
+        }
+        QueryDetailsReq req = new QueryDetailsReq();
+        req.setOrderId(id);
+        List<LdOrderInfo> list = ldOrderInfoMapper.reservationLists(req);
+        if(list==null || list.size() == 0 ){
+            res.setErrorInfo("该预定无订购");
+            return res;
+        }
+        order.setUserId(username);
+        //添加到订单表
+        ldOrderMapper.insertSelective(order);
+        for(LdOrderInfo bean : list){
+            ldOrderInfoMapper.insertSelective(bean);
+            //ldOrderInfoMapper.deleteByPrimaryKeyRe(bean);
+        }
+        //ldOrderMapper.deleteReservation(id);
+        res.setErrorNo("0");
+        return res;
+    }
+    @Transactional
+    @Override
+    public LdOrder addReservation(String phone) {
+        LdOrder order = new LdOrder();
+        order.setPhone(phone);
+        LdClient client = ldClientMapper.queryClientByPhone(order);
+        order.setClientId(client.getId());
+        order.setId(UUID.randomUUID().toString());
+        order.setCreateTime(new Date());
+        ldOrderMapper.addReservation(order);
+        return order;
+    }
+
+
+
+    @Override
     @Transactional
     public RespBean infoAdd(LdOrderInfo bean) {
 
@@ -177,7 +336,7 @@ public class OrderServiceImpl implements OrderService {
         res.setErrorNo("0");
         return res;
     }
-
+    @Transactional
     public void infoAddFn(LdOrderInfo bean){
 
         bean.setId(UUID.randomUUID().toString());
@@ -189,7 +348,6 @@ public class OrderServiceImpl implements OrderService {
         ldOrderInfoMapper.insertSelective(bean);
         //修改总件数
         ldOrderMapper.updateOrderIdSum(bean);
-        //修改用户积分
         LdClothesType ldClothesType = ldClothesTypeMapper.selectByPrimaryKey(bean.getClothestypeId());
         LdLaundryType ldLaundryType = ldLaundryTypeMapper.selectByPrimaryKey(bean.getLaundeytypeId());
         BigDecimal price = ldClothesType.getPrice().add(ldLaundryType.getPrice());
@@ -199,6 +357,28 @@ public class OrderServiceImpl implements OrderService {
         //修改总价
         ldOrderMapper.updatePrice(ldOrder);
     }
+
+    @Override
+    @Transactional
+    public void addReservationInfo(LdOrderInfo orderInfo) {
+        for(int i = 0; i < orderInfo.getSum(); i++){
+            orderInfo.setId(UUID.randomUUID().toString());
+            orderInfo.setState(0);
+            orderInfo.setCreateTime(new Date());
+            ldOrderInfoMapper.addReservationInfo(orderInfo);
+            ldOrderMapper.updateReservationSum(orderInfo);
+            //修改用户积分
+            LdClothesType ldClothesType = ldClothesTypeMapper.selectByPrimaryKey(orderInfo.getClothestypeId());
+            LdLaundryType ldLaundryType = ldLaundryTypeMapper.selectByPrimaryKey(orderInfo.getLaundeytypeId());
+            BigDecimal price = ldClothesType.getPrice().add(ldLaundryType.getPrice());
+            LdOrder ldOrder = new LdOrder();
+            ldOrder.setId(orderInfo.getOrderId());
+            ldOrder.setPrice(price);
+            //修改总价
+            ldOrderMapper.updateReservationPrice(ldOrder);
+        }
+    }
+
 
     @Override
     public RespBeanOneObj getInfoInfo(String id) {
@@ -225,7 +405,7 @@ public class OrderServiceImpl implements OrderService {
             Date date = new Date();
             Calendar cal = Calendar.getInstance();
             cal.setTime(date);
-            cal.add(Calendar.HOUR, 2 * ldOrder.getSum());// 24小时制
+            cal.add(Calendar.HOUR, 24 + 12 * Math.round(ldOrder.getSum() / 10));// 24小时制
             date = cal.getTime();
             ldOrder.setDateStr(ToolsUtils.getDateStr(date));
         }
@@ -283,4 +463,6 @@ public class OrderServiceImpl implements OrderService {
         res.setErrorNo("0");
         return res;
     }
+
+
 }

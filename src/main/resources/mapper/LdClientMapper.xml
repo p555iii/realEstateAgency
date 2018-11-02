@@ -122,7 +122,7 @@
           parameterType="com.real.cyd.bean.LdOrder">
     SELECT * from ld_client where phone = #{phone}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from ld_client
     where id = #{id,jdbcType=VARCHAR}
   </delete>

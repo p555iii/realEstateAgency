@@ -34,4 +34,14 @@ public interface LdOrderInfoMapper {
     int getCompleteSum(@Param("orderId")String orderId);
 
     void completeLaunryByOrderId(@Param("orderId")String id);
+
+    List<LdOrderInfoVo> reservationList(QueryDetailsReq req);
+
+    int reservationCount(QueryDetailsReq req);
+
+    List<LdOrderInfo> reservationLists(QueryDetailsReq req);
+
+    void deleteByPrimaryKeyRe(LdOrderInfo bean);
+
+    void addReservationInfo(LdOrderInfo orderInfo);
 }

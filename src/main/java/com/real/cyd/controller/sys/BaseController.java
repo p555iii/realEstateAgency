@@ -3,6 +3,7 @@ package com.real.cyd.controller.sys;
 import com.alibaba.fastjson.JSON;
 import com.real.cyd.bean.FinRecorded;
 import com.real.cyd.bean.FinSource;
+import com.real.cyd.bean.LdClient;
 import com.real.cyd.bean.vo.RecordBean;
 import com.real.cyd.mapper.FinRecordedMapper;
 import com.real.cyd.mapper.FinSourceMapper;
@@ -11,6 +12,7 @@ import com.real.cyd.mapper.LdOrderMapper;
 import com.real.cyd.resp.EChartResp;
 import com.real.cyd.resp.ResMainBean;
 import com.real.cyd.resp.RespBeanOneObj;
+import com.real.cyd.service.ClientService;
 import com.real.cyd.utils.ToolsUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,6 +41,9 @@ public class BaseController {
     private LdOrderInfoMapper ldOrderInfoMapper;
     @Resource
     private FinSourceMapper finSourceMapper;
+
+    @Resource
+    private ClientService clientService;
     @RequestMapping("/record")
     @ResponseBody
     public RespBeanOneObj record(){
@@ -55,9 +60,15 @@ public class BaseController {
     }
 
     @RequestMapping("/main")
-    public String main(Model model){
+    public String main(Model model,String time){
         ResMainBean bean = new ResMainBean();
-        int countOrder = ldOrderMapper.queryOrderSum();
+        String[] timeSplit;
+        if(time != null && !time.equals("")){
+            timeSplit = ToolsUtils.getTimeSplit(time);
+        }else {
+            timeSplit = new String[2];
+        }
+        int countOrder = ldOrderMapper.queryOrderSum(timeSplit[0],timeSplit[1]);
         bean.setCountOrder(countOrder);
         int toDayOrder = ldOrderMapper.queryOrderSumToDay();
         bean.setToDayOrder(toDayOrder);
@@ -65,7 +76,7 @@ public class BaseController {
         bean.setToDayRecord(toDatRecord);
         double toDayDebit = finRecordedMapper.toDayDebit();
         bean.setToDayDebit(toDayDebit);
-        BigDecimal countRecord = finRecordedMapper.countRecord();
+        BigDecimal countRecord = finRecordedMapper.countRecord(timeSplit[0],timeSplit[1]);
         bean.setCountRecord(0);
         if(countRecord != null){
             bean.setCountRecord(countRecord.doubleValue());
@@ -146,7 +157,10 @@ public class BaseController {
     }
 
     @RequestMapping("/laundryCompleteSum")
-    public String laundryCompleteSum(){
+    public String laundryCompleteSum(Model model){
+        //这里查的是订单已经洗衣完成，但是还未被提交和出库的订单
+        int sum = ldOrderMapper.getCompleteOrder();
+        model.addAttribute("sum",sum);
         return "laundryCompleteSum";
     }
 
@@ -167,5 +181,20 @@ public class BaseController {
         a.roll(Calendar.DATE, -1);//日期回滚一天，也就是最后一天
         int maxDate = a.get(Calendar.MONTH) + 1;
         return maxDate;
+    }
+
+    @RequestMapping("/QRcode")
+    public String QRcode(){
+        return "clientManager/QRcode";
+    }
+
+    @RequestMapping("/addQr")
+    public String addQr(){
+        return "clientManager/addQr";
+    }
+    @RequestMapping("/addQrs")
+    public String addQr(LdClient client){
+        clientService.insertClient(client);
+        return "clientManager/addQr";
     }
 }

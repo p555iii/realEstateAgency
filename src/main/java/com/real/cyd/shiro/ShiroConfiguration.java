@@ -66,6 +66,14 @@ public class ShiroConfiguration {
         //配置 不拦截目录必须在 /**前
         filterChainDefinitionMap.put("/Wopop_files/**","anon");
         filterChainDefinitionMap.put("/login","anon");
+        filterChainDefinitionMap.put("/QRcode","anon");
+        filterChainDefinitionMap.put("/addQr","anon");
+        filterChainDefinitionMap.put("/addQrs","anon");
+        filterChainDefinitionMap.put("/clientManager/**","anon");
+        filterChainDefinitionMap.put("/web/**","anon");
+        filterChainDefinitionMap.put("/assets/**","anon");
+        filterChainDefinitionMap.put("/images/**","anon");
+        filterChainDefinitionMap.put("/plugins/**","anon");
         // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
         shiroFilterFactoryBean.setLoginUrl("/login");
         filterChainDefinitionMap.put("/**", "authc");

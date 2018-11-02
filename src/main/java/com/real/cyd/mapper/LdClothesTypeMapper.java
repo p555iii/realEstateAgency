@@ -28,4 +28,6 @@ public interface LdClothesTypeMapper {
     List<LdClothesType> queryList();
 
     int count();
+
+    List<LdClothesType> list();
 }

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style type="text/css">
+        *{margin: 0;padding: 0;}
+        li{list-style: none;}
+        a{text-decoration: none;}
+        .width_1200{
+            width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header{
+            width: 100%;
+            height: 80px;
+            background-color: rgba(255,255,255,0.9);
+            position: fixed;
+            z-index: 999;
+            top: 0;
+            box-shadow: 0 0 10px 0px #4f4f4f;
+        }
+        .header>div{
+            height: 80px;
+            overflow: hidden;
+        }
+        /* .header img{
+            margin-top: 20px;
+        } */
+        .header a{
+            display: inline-block;
+            width: 500px;
+            height: 36px;
+            background-color: #f8c293;
+            font-size: 16px;
+            color: #fff;
+            text-align: center;
+            line-height: 36px;
+            border-radius: 10px;
+            margin-left: 150px;
+            vertical-align: bottom;
+        }
+        .fill{
+            height: 80px;
+        }
+        .con_top{
+            width: 100%;
+            height: 500px;
+            font-size: 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .con_top img{
+            width: 100%;
+            height: 500px;
+            position: absolute;
+            left: 100%;
+        }
+        .con_top img:nth-child(1){
+            animation: dong 10s infinite;
+        }
+        .con_top img:nth-child(2){
+            animation: dong2 10s infinite;
+        }
+        @keyframes dong{
+            0%,40%{
+                left: 0%;
+            }
+            50%{
+                left: -100%
+            }
+            90%{
+                left: 100%;
+            }
+            100%{
+                left: 0;
+            }
+        }
+        @keyframes dong2{
+            0%,40%{
+                left: 100%;
+            }
+            50%,90%{
+                left: 0;
+            }
+            100%{
+                left: -100%;
+            }
+        }
+        .con_2{
+            width: 100%;
+            height: 300px;
+            background-color: #f5f5f5;
+        }
+        .con_2 ul{
+            width: 1200px;
+            height: 300px;
+            margin: 0 auto;
+            display: flex;
+        }
+        .con_2 li{
+            width: 160px;
+            height: 280px;
+            text-align: center;
+            padding: 10px 20px;
+        }
+        .con_2 li img{
+            margin: 50px 0 30px 0;
+        }
+        .con_2 li h3{
+            font-size: 18px;
+            color: #4f4f4f;
+            margin-bottom: 30px;
+        }
+        .con_2 li p{
+            font-size: 14px;
+            color: #4f4f4f;
+        }
+        .con_3{
+            width: 100%;
+            height: 400px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .con_3 h3{
+            font-size: 30px;
+            color: #189c9b;
+            font-weight: 500;
+        }
+        .con_3>div{
+            text-align: center;
+            padding: 80px 110px;
+        }
+        .con_3 p{
+            font-size: 16px;
+            color: #4f4f4f;
+            text-align: left;
+            margin-top: 50px
+        }
+        .con_3 img{
+            width: 674px;
+            height: 400px;
+        }
+        .con_4{
+            width: 100%;
+            height: 480px;
+            font-size: 0;
+        }
+        .con_4 img{
+            width: 100%;
+            height: 480px;
+        }
+        .con_5{
+            width: 100%;
+            height: 275px;
+            text-align: center;
+            background: linear-gradient(#0077dd,#55bbff);
+            overflow: hidden;
+        }
+        .con_5 h2{
+            font-size: 36px;
+            font-weight: lighter;
+            color: #fff;
+            margin: 47px 0 11px 0;
+        }
+        .con_5 span{
+            background-color: #fff;
+            width: 360px;
+            margin-bottom: 11px;
+            height: 2px;
+            display:block;
+            margin: 0 auto 35px;
+        }
+        .con_5 p{
+            color: #fff;
+            font-size: 20px;
+
+        }
+        .con_5 a{
+            display: block;
+            width: 96px;
+            height: 31px;
+            margin: 0 auto;
+            font-size: 24px;
+            color: #fff;
+            padding: 11px 30px 10px 30px;
+            border: 1px solid #fff;
+            border-radius: 4px;
+            margin-top: 28px;
+            transition: all 0.5s;
+        }
+        .con_5 a:hover{
+            color: #11aaee;
+            background-color: #fff;
+        }
+        .footer{
+            width: 100%;
+            height: 150px;
+            background-color: #666;
+            overflow: hidden;
+        }
+        .footer p{
+            width: 1200px;
+            font-size: 16px;
+            color: #fff;
+            margin: 0 auto;
+            /* text-align: center; */
+            margin-top: 70px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="width_1200">
+            <img src="../images/logo.png">
+            <a href="javascript:;" onclick="addR()">添加预约</a>
+        </div>
+    </div>
+    <div class="fill"></div>
+    <div class="con_top">
+        <img src="../images/1144389098.jpg">
+        <img src="../images/banner1.jpg">
+    </div>
+    <div class="con_2">
+        <ul>
+            <li>
+                <img src="../images/1.png">
+                <h3>衣物清洗</h3>
+                <p>各类衣物干洗、水洗，24小时取衣，浅色衣物不加价</p>
+            </li>
+            <li>
+                <img src="../images/2.png">
+                <h3>单烫</h3>
+                <p>单烫半价</p>
+            </li>
+            <li>
+                <img src="../images/3.png">
+                <h3>地毯</h3>
+                <p>大件地毯上门拆装取送</p>
+            </li>
+            <li>
+                <img src="../images/4.png">
+                <h3>床品</h3>
+                <p>专业大型工业洗涤设备，彻底清洁床品卫生</p>
+            </li>
+            <li>
+                <img src="../images/5.png">
+                <h3>窗帘</h3>
+                <p>上门拆装，早上拆，晚上装</p>
+            </li>
+            <li>
+                <img src="../images/6.png">
+                <h3>上门服务</h3>
+                <p>上门清洗布艺沙发、床垫等家居用品</p>
+            </li>
+        </ul>
+    </div>
+    <div class="con_3">
+        <div>
+            <h3>一个追求品质的洗衣店</h3>
+            <p>衣岚坊坚持“专业的服务、合理的价格”为每位顾客提供服务。“让每一位光临福奈特的顾客满意而归”是我们的目标，“为了干净”是我们永恒不变的追求！</p>
+        </div>
+        <img src="../images/0143576044.jpg">
+    </div>
+    <div class="con_4">
+        <img src="../images/Fnews_02.jpg">
+    </div>
+    <div class="con_5">
+        <h2>更多疑问 全面解答</h2>
+        <span></span>
+        <p>在线为你解答所有疑问</p>
+        <a href="">免费资讯</a>
+    </div>
+    <div class="footer">
+        <p>这是公司信息：信息112231431435</p>
+    </div>
+</body>
+<script th:inline="javascript">
+    var phone = [[${phone}]];
+    function addR() {
+        location.href = "/web/toOrder?phone="+phone;
+    }
+</script>
+</html>

@@ -1,0 +1,143 @@
+*{margin: 0;padding: 0;}
+li{list-style:none;}
+a{text-decoration: none;}
+.width_1200{
+    width: 1200px;
+    margin: 0 auto;
+}
+.width_1000{
+    width: 1000px;
+    margin: 0 auto;
+}
+
+.header{
+    width: 100%;
+    height: 80px;
+    background-color: rgba(255,255,255,0.9);
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    box-shadow: 0 0 5px 0px #4f4f4f;
+}
+.header>div{
+    height: 80px;
+    overflow: hidden;
+}
+.fill{
+    height: 80px;
+}
+.content{
+    width: 100%;
+    min-height: 385px;
+    overflow: hidden;
+}
+.con_header{
+    width: 1000px;
+    margin:70px auto 0;
+}
+.con_header p{
+    font-size: 30px;
+    color: #999;
+    display: inline-block;
+}
+.con_header form{
+    width: 259px;
+    height: 40px;
+    display: inline-block;
+    vertical-align: top;
+}
+.con_header input{
+    display: inline-block;
+    width: 250px;
+    font-size: 20px;
+    color: #999;
+    line-height: 39px;
+    padding-left: 9px;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid #999;
+}
+.indent{
+    width: 958px;
+    height: 100px;
+    border: 1px solid #ccc;
+    margin: 80px auto 0;
+    display: flex;
+    padding: 20px;
+    background-color: #fcfcfc;
+    display: flex;
+    justify-content: space-around;
+}
+.indent>ul{
+    display: flex;
+    align-items: center;
+}
+.indent img{
+    width: 70px;
+    height: 70px;
+    margin: 30px;
+}
+.indent p{
+    font-size: 18px;
+    color:#666;
+}
+.indent select{
+    width: 100px;
+    height: 25px;
+    color: #666;
+    margin-top: 15px;
+    outline: none;
+}
+.indent input{
+    width: 80px;
+    height: 25px;
+    color: #666;
+    margin-left: 20px;
+    padding-left: 6px;
+    outline: none;
+}
+.indent select:hover{
+    cursor: pointer;
+}
+.indent ul:hover p{
+    color: #1296db;
+}
+.plus{
+    display: block;
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    border: none;
+    background-color:#fff;
+    outline: none;
+    cursor:pointer;
+    background-image: url(../images/plus.png);
+    background-position: 0px -50px;
+    background-repeat: no-repeat;
+    margin: 50px auto 130px;
+}
+.plus:hover{
+    background-position: 0px 0px;
+}
+.submit{
+    width: 80%;
+    height: 70px; 
+    background-color: rgb(240, 240, 240);
+    border-radius: 10px;
+    margin: 0 10%;
+    text-align: center;
+    position: fixed;
+    bottom: 0.1%;
+}
+.submit button{
+    width: 200px;
+    height: 40px;
+    border: none;
+    background-color: #1296db;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 8px;
+    margin-top: 15px;
+    outline: none;
+    cursor: pointer;
+}

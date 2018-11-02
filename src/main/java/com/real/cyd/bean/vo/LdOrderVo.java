@@ -26,6 +26,16 @@ public class LdOrderVo {
 
     private String emDateStr;  // 预计取回时间
 
+    private String userName;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     public BigDecimal getRealPrice() {
         return realPrice;
     }

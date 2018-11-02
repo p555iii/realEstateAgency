@@ -1,9 +1,6 @@
 package com.real.cyd.service.impl;
 
-import com.real.cyd.bean.LdClient;
-import com.real.cyd.bean.LdIntegral;
-import com.real.cyd.bean.RespBean;
-import com.real.cyd.bean.SysUser;
+import com.real.cyd.bean.*;
 import com.real.cyd.mapper.LdClientMapper;
 import com.real.cyd.mapper.LdIntegralMapper;
 import com.real.cyd.req.QueryUserReq;
@@ -68,9 +65,25 @@ public class ClientServiceImpl implements ClientService{
     }
     @Transactional
     @Override
-    public void insertClient(LdClient client) {
+    public RespBean insertClient(LdClient client) {
+        RespBean res = new RespBean();
+        res.setErrorNo("1");
         if(client == null){
-            return;
+            res.setErrorInfo("客户为空");
+            return res;
+        }
+        //重复手机不予添加
+        String phone = client.getPhone();
+        if(ToolsUtils.IsNull(phone)){
+            res.setErrorInfo("手机号为空");
+            return res;
+        }
+        LdOrder order = new LdOrder();
+        order.setPhone(phone);
+        LdClient client1 = ldClientMapper.queryClientByPhone(order);
+        if(client1 != null){
+            res.setErrorInfo("手机号已存在");
+            return res;
         }
         if(client.getId() == null || client.getId().equals("")){
             client.setId(UUID.randomUUID().toString());
@@ -81,7 +94,10 @@ public class ClientServiceImpl implements ClientService{
         if(client.getLevel() == null || client.getLevel() == 0){
             client.setLevel(1);
         }
+
         ldClientMapper.insert(client);
+        res.setErrorNo("0");
+        return res;
     }
     @Transactional
     @Override

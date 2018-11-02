@@ -1,6 +1,6 @@
 var $,tab,dataStr,layer;
 layui.config({
-	base : "plugins/layuicms/"
+	base : "../../plugins/layuicms/"
 }).extend({
 	"bodyTab" : "bodyTab"
 })

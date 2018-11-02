@@ -22,6 +22,16 @@ public class LdOrder {
 
     private String phone;
 
+    private String userId;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     public BigDecimal getRealPrice() {
         return realPrice;
     }

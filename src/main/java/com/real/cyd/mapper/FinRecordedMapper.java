@@ -36,7 +36,7 @@ public interface FinRecordedMapper {
 
     double toDayDebit();
 
-    BigDecimal countRecord();
+    BigDecimal countRecord(@Param("startTime")String startTime,@Param("endTime")String endTime);
 
     FinRecorded queryOrderId(LdOrder order);
 

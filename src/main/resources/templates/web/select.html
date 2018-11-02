@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>订单页</title>
+    <style type="text/css">
+        *{margin: 0;padding: 0;}
+        li{list-style:none;}
+        a{text-decoration: none;}
+        .width_1200{
+            width: 1200px;
+            margin: 0 auto;
+        }
+        .width_1000{
+            width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header{
+            width: 100%;
+            height: 80px;
+            background-color: rgba(255,255,255,0.9);
+            position: fixed;
+            z-index: 999;
+            top: 0;
+            box-shadow: 0 0 5px 0px #4f4f4f;
+        }
+        .header>div{
+            height: 80px;
+            overflow: hidden;
+        }
+        .fill{
+            height: 80px;
+        }
+        .content{
+            width: 100%;
+            min-height: 385px;
+            overflow: hidden;
+        }
+        .con_header{
+            width: 1000px;
+            margin:70px auto 0;
+        }
+        .con_header p{
+            font-size: 30px;
+            color: #999;
+            display: inline-block;
+        }
+        .con_header form{
+            width: 259px;
+            height: 40px;
+            display: inline-block;
+            vertical-align: top;
+        }
+        .con_header input{
+            display: inline-block;
+            width: 250px;
+            font-size: 20px;
+            color: #999;
+            line-height: 39px;
+            padding-left: 9px;
+            outline: none;
+            border: none;
+            border-bottom: 1px solid #999;
+        }
+        .indent{
+            width: 958px;
+            height: 100px;
+            border: 1px solid #ccc;
+            margin: 80px auto 0;
+            display: flex;
+            padding: 20px;
+            background-color: #fcfcfc;
+            display: flex;
+            justify-content: space-around;
+        }
+        .indent>ul{
+            display: flex;
+            align-items: center;
+        }
+        .indent img{
+            width: 70px;
+            height: 70px;
+            margin: 30px;
+        }
+        .indent p{
+            font-size: 18px;
+            color:#666;
+        }
+        .indent select{
+            width: 100px;
+            height: 25px;
+            color: #666;
+            margin-top: 15px;
+            outline: none;
+        }
+        .indent input{
+            width: 80px;
+            height: 25px;
+            color: #666;
+            margin-left: 20px;
+            padding-left: 6px;
+            outline: none;
+        }
+        .indent select:hover{
+            cursor: pointer;
+        }
+        .indent ul:hover p{
+            color: #1296db;
+        }
+        .plus{
+            display: block;
+            width: 50px;
+            height: 50px;
+            overflow: hidden;
+            border: none;
+            background-color:#fff;
+            outline: none;
+            cursor:pointer;
+            background-image: url(../../images/plus.png);
+            background-position: 0px -50px;
+            background-repeat: no-repeat;
+            margin: 50px auto 130px;
+        }
+        .plus:hover{
+            background-position: 0px 0px;
+        }
+        .submit{
+            width: 80%;
+            height: 70px;
+            background-color: rgb(240, 240, 240);
+            border-radius: 10px;
+            margin: 0 10%;
+            text-align: center;
+            position: fixed;
+            bottom: 0.1%;
+        }
+        .submit button{
+            width: 200px;
+            height: 40px;
+            border: none;
+            background-color: #1296db;
+            color: #fff;
+            font-size: 18px;
+            border-radius: 8px;
+            margin-top: 15px;
+            outline: none;
+            cursor: pointer;
+        }
+    </style>
+    <script src="/assets/js/jquery-1.8.2.min.js"></script>
+</head>
+<body>
+    <div class="header">
+        <div class="width_1200">
+            <a href="index.html" title="首页"><img src="../images/logo.png"></a>
+        </div>
+    </div>
+    <div class="fill"></div>
+    <div class="content">
+        <div class="con_header">
+            <p>订单号&nbsp;：&nbsp;</p>
+            <!-- <form> -->
+                <input type="text" name="" th:value="${orderId}" disabled="disabled">
+            <!-- </form> -->
+        </div>
+        <div class="indent">
+            <ul>
+                <li><img src="../images/22.png"></li>
+                <li>
+                    <p>衣服类型</p>
+                    <select class="cloth" name="" >
+                        <option th:each="clothesType: ${clothesTypeList}" th:value="${clothesType.id}" th:text="${clothesType.typeName}"></option>
+                    </select>
+                </li>
+            </ul>
+            <ul>
+                <li><img src="../images/21.png"></li>
+                <li>
+                    <p>洗衣类型</p>
+                    <select class="cloth" name="" >
+                        <option th:each="ldLaundryType: ${ldLaundryTypeList}" th:value="${ldLaundryType.id}" th:text="${ldLaundryType.laundryType}"></option>
+                    </select>
+                </li>
+            </ul>
+            <ul>
+                <li><p>件数&nbsp;&nbsp;:</p></li>
+                <li><input type="text" name=""></li>
+            </ul>
+        </div>
+        
+    </div>
+    <button title="添加订单" class="plus"></button>
+    <div class="submit">
+        <button class="refer" type="submit">
+            提交订单
+        </button>
+    </div>
+    <script th:inline="javascript">
+        var data = [[${orderId}]];
+			$('.plus').on('click',function(){
+			$('.content').append($('.indent:eq(0)').clone());
+		})
+		$('.refer').on('click',function(){
+			for(var i = 0; i< $('.indent').length; i++){
+				var clothes = $($($($('.indent:eq('+i+')').children()[0]).find('li')[1]).find('select').get(0)).find('option:selected').val();
+				var wash = $($($($('.indent:eq('+i+')').children()[1]).find('li')[1]).find('select').get(0)).find('option:selected').val();
+				var num = $($($('.indent:eq('+i+')').children()[2]).find('li')[1]).find('input').val();
+				if(num==0){
+				    alert("请输入大于0的数");
+				    return;
+                }
+                jQuery.ajax({
+                    url:"/web/addInfo",   //提交地址
+                    async:true,        //是否异步，默认为true
+                    cache:false,       //页面是否缓存数据 默认为true
+                    type:"POST",         //提交方式
+                    data:{orderId:data,clothestypeId:clothes,laundeytypeId:wash,sum:num},  //提交参数
+                    dataType:"json",    //返回类型，可以为html text json xml
+                    success:function(date){  //成功时的回调函数
+
+                    }
+                });
+				
+			}
+			alert("订单已提交，请等待人员上门取件");
+			window.location.href="http://localhost:8081/web/login";
+		})
+
+	</script>
+</body>
+</html>

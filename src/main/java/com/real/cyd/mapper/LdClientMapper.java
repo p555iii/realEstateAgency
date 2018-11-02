@@ -29,4 +29,5 @@ public interface LdClientMapper {
     LdClient queryClientByPhone(LdOrder bean);
 
     void updateLevel(LdOrder ldOrder);
+
 }

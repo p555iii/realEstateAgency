@@ -135,7 +135,53 @@
           AND CREATE_time  &lt;= #{endTime}
         </if>
       </where>
-
+  </select>
+  <select id="reservationList" resultMap="BaseResultMap2"
+          parameterType="com.real.cyd.req.ld.QueryDetailsReq">
+    SELECT i.*,c.`type_name`,l.`Laundry_type`,c.`price`+l.`price` price FROM ld_reservation_info i LEFT JOIN ld_clothes_type c ON i.`clothestype_id` = c.`id` LEFT JOIN ld_laundry_type l ON i.`laundeytype_id` = l.`id`
+    <where>
+      <if test="id != null and id != ''">
+        AND i.order_id = #{id}
+      </if>
+      <if test="infoId != null and infoId != ''">
+        AND  i.id = #{infoId}
+      </if>
+      <if test="clothestypeId != null and clothestypeId != ''">
+        AND  i.clothestype_id = #{clothestypeId}
+      </if>
+      <if test="laundeytypeId != null and laundeytypeId != ''">
+        AND i.laundeytype_id = #{laundeytypeId}
+      </if>
+      <if test="startTime != null and startTime != ''">
+        AND i.CREATE_time  &gt;= #{startTime}
+      </if>
+      <if test="endTime != null and endTime != ''">
+        AND i.CREATE_time  &lt;= #{endTime}
+      </if>
+    </where>
+  </select>
+  <select id="reservationCount" resultType="int" parameterType="com.real.cyd.req.ld.QueryDetailsReq">
+    select COUNT(*) from ld_reservation_info
+    <where>
+      <if test="id != null and id != ''">
+        AND order_id = #{id}
+      </if>
+      <if test="infoId != null and infoId != ''">
+        AND id = #{infoId}
+      </if>
+      <if test="clothestypeId != null and clothestypeId != ''">
+        AND clothestype_id = #{clothestypeId}
+      </if>
+      <if test="laundeytypeId != null and laundeytypeId != ''">
+        AND laundeytype_id = #{laundeytypeId}
+      </if>
+      <if test="startTime != null and startTime != ''">
+        AND CREATE_time  &gt;= #{startTime}
+      </if>
+      <if test="endTime != null and endTime != ''">
+        AND CREATE_time  &lt;= #{endTime}
+      </if>
+    </where>
   </select>
     <select id="toDayLaundry" resultType="int">
        SELECT COUNT(*) FROM ld_order_info WHERE DATE(create_time) =  CURDATE()
@@ -146,9 +192,18 @@
   <select id="getThisDayOrderCount" resultType="int">
 
   </select>
+  <select id="reservationLists" resultMap="BaseResultMap"
+          parameterType="com.real.cyd.req.ld.QueryDetailsReq">
+    SELECT * from ld_reservation_info where order_id = #{orderId}
+  </select>
+
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from ld_order_info
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByPrimaryKeyRe" parameterType="com.real.cyd.bean.LdOrderInfo">
+    delete from ld_reservation_info
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.real.cyd.bean.LdOrderInfo" >
@@ -201,7 +256,53 @@
     </trim>
   </insert>
 
-  <update id="updateByExampleSelective" parameterType="map" >
+  <insert id="addReservationInfo" parameterType="com.real.cyd.bean.LdOrderInfo">
+
+    insert into ld_reservation_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="clothestypeId != null" >
+        clothestype_id,
+      </if>
+      <if test="laundeytypeId != null" >
+        laundeytype_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="clothestypeId != null" >
+        #{clothestypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="laundeytypeId != null" >
+        #{laundeytypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+
+    <update id="updateByExampleSelective" parameterType="map" >
     update ld_order_info
     <set >
       <if test="record.id != null" >

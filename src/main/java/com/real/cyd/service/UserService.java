@@ -10,8 +10,8 @@ import com.real.cyd.resp.vo.UserRoleInfoVo;
 import java.util.List;
 
 public interface UserService {
-    public int insertUser(SysUser user);
-    public int updateUser(SysUser user);
+    public RespBean insertUser(SysUser user);
+    public RespBean updateUser(SysUser user);
     public int deleteUser(SysUser user);
     public RespBean queryUserList(QueryUserReq user);
 

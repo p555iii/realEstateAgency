@@ -26,9 +26,22 @@ public class UserServiceImpl implements UserService{
     private SysUserMapper userMapper;
 
     @Transactional
-    public int insertUser(SysUser user) {
+    public RespBean insertUser(SysUser user) {
+        RespBean res = new RespBean();
+        res.setErrorNo("1");
         if(user == null){
-            return 0;
+            res.setErrorInfo("输入用户为空");
+            return res;
+        }
+        String username = user.getUsername();
+        if(ToolsUtils.IsNull(username)){
+            res.setErrorInfo("输入用户名为空");
+            return res;
+        }
+        SysUser users = userMapper.selectByUsername(username);
+        if(users != null){
+            res.setErrorInfo("用户名已存在");
+            return res;
         }
         if(user.getId() == null || user.getId().equals("")){
             user.setId(UUID.randomUUID().toString());
@@ -44,15 +57,40 @@ public class UserServiceImpl implements UserService{
             Object obj = new SimpleHash("MD5", user.getPassword(), user.getCredentialsSalt(), 10);
             user.setPassword(obj.toString());
         }
-        return userMapper.insert(user);
+        userMapper.insert(user);
+        res.setErrorNo("0");
+        return res;
     }
 
     @Transactional
-    public int updateUser(SysUser user) {
+    public RespBean updateUser(SysUser user) {
+        RespBean res = new RespBean();
+        res.setErrorNo("1");
         if(user.getState() == null){
             user.setState(0);
         }
-        return userMapper.updateByPrimaryKeySelective(user);
+        if(user.getPassword()!= null && user.getUsername()!=null){
+            user.setSalt(user.getId());
+            Object obj = new SimpleHash("MD5", user.getPassword(), user.getCredentialsSalt(), 10);
+            user.setPassword(obj.toString());
+            userMapper.updateByPrimaryKeySelective(user);
+            res.setErrorNo("0");
+            return res;
+        }
+        SysUser users = userMapper.selectByUsername(user.getUsername());
+        if(users != null){
+            res.setErrorInfo("用户名已存在");
+            if(users.getState() != user.getState()){
+                userMapper.updateState(user);
+                res.setErrorNo("0");
+                return res;
+            }
+            return res;
+        }
+        userMapper.updateByPrimaryKeySelective(user);
+
+        res.setErrorNo("0");
+        return res;
     }
 
     @Transactional

@@ -20,6 +20,7 @@
     <result column="name" property="name" jdbcType="VARCHAR"></result>
     <result column="phone" property="phone" jdbcType="VARCHAR"></result>
     <result column="real_price" property="realPrice" jdbcType="DECIMAL"></result>
+    <result column="userName" property="userName" jdbcType="VARCHAR"></result>
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -89,6 +90,12 @@
     from ld_order
     where id = #{id,jdbcType=VARCHAR}
   </select>
+    <select id="selectByPrimaryKeyRe" resultMap="BaseResultMap"   parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List" />
+        from ld_reservation
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
     <select id="queryList" parameterType="com.real.cyd.req.ld.QueryOrderReq" resultMap="BaseResultMap2">
        SELECT o.*,c.`name`,c.`phone` FROM ld_order o LEFT JOIN ld_client  c ON  o.`client_id` = c.`id`
        <where>
@@ -116,10 +123,92 @@
        </where>
     </select>
   <select id="count" resultType="int">
-    SELECT count(*) FROM ld_order
+    SELECT count(*) FROM ld_order o LEFT JOIN ld_client  c ON  o.`client_id` = c.`id`
+    <where>
+      <if test="id != null and id != ''" >
+        o.id = #{id}
+      </if>
+      <if test="name != null and name != ''" >
+        c.name = #{name}
+      </if>
+      <if test="phone != null and phone != ''" >
+        c.`phone` = #{phone}
+      </if>
+      <if test="startTime != null and startTime != ''">
+        AND o.CREATE_time  &gt;= #{startTime}
+      </if>
+      <if test="endTime != null and endTime != ''">
+        AND o.CREATE_time  &lt;= #{endTime}
+      </if>
+      <if test="emStartTime != null and emStartTime != ''">
+        AND estimated_time  &gt;= #{emStartTime}
+      </if>
+      <if test="emEndTime != null and emEndTime != ''">
+        AND estimated_time  &lt;= #{emEndTime}
+      </if>
+    </where>
+  </select>
+  <select id="queryReservationList" resultMap="BaseResultMap2"
+          parameterType="com.real.cyd.req.ld.QueryOrderReq">
+    SELECT o.*,c.`name`,c.`phone` FROM ld_reservation o LEFT JOIN ld_client  c ON  o.`client_id` = c.`id`
+    <where>
+      <if test="id != null and id != ''" >
+        o.id = #{id}
+      </if>
+      <if test="name != null and name != ''" >
+        c.name = #{name}
+      </if>
+      <if test="phone != null and phone != ''" >
+        c.`phone` = #{phone}
+      </if>
+      <if test="startTime != null and startTime != ''">
+        AND o.CREATE_time  &gt;= #{startTime}
+      </if>
+      <if test="endTime != null and endTime != ''">
+        AND o.CREATE_time  &lt;= #{endTime}
+      </if>
+      <if test="emStartTime != null and emStartTime != ''">
+        AND estimated_time  &gt;= #{emStartTime}
+      </if>
+      <if test="emEndTime != null and emEndTime != ''">
+        AND estimated_time  &lt;= #{emEndTime}
+      </if>
+    </where>
+  </select>
+  <select id="reservationCount" resultType="int">
+    SELECT count(*) FROM ld_reservation o LEFT JOIN ld_client  c ON  o.`client_id` = c.`id`
+    <where>
+      <if test="id != null and id != ''" >
+        o.id = #{id}
+      </if>
+      <if test="name != null and name != ''" >
+        c.name = #{name}
+      </if>
+      <if test="phone != null and phone != ''" >
+        c.`phone` = #{phone}
+      </if>
+      <if test="startTime != null and startTime != ''">
+        AND o.CREATE_time  &gt;= #{startTime}
+      </if>
+      <if test="endTime != null and endTime != ''">
+        AND o.CREATE_time  &lt;= #{endTime}
+      </if>
+      <if test="emStartTime != null and emStartTime != ''">
+        AND estimated_time  &gt;= #{emStartTime}
+      </if>
+      <if test="emEndTime != null and emEndTime != ''">
+        AND estimated_time  &lt;= #{emEndTime}
+      </if>
+    </where>
   </select>
   <select id="queryOrderSum" resultType="int">
     SELECT count(*) FROM ld_order where estimated_time is not NULL
+    <if test="startTime != null and startTime != ''">
+      AND CREATE_time  &gt;= #{startTime}
+    </if>
+    <if test="endTime != null and endTime != ''">
+      AND CREATE_time  &lt;= #{endTime}
+    </if>
   </select>
   <select id="queryOrderSumToDay" resultType="int">
     SELECT COUNT(*) FROM ld_order WHERE estimated_time IS NOT NULL AND DATE(create_time) =  CURDATE()
@@ -133,12 +222,21 @@
   <select id="getThisDayPriceCount" resultType="int">
         SELECT IFNULL(SUM(real_price),0) FROM ld_order WHERE estimated_time IS NOT NULL AND DAY(create_time) = #{day} AND  MONTH(create_time) = ( SELECT DATE_FORMAT( CURRENT_TIMESTAMP(),'%m' ) ) AND YEAR(create_time) = ( SELECT DATE_FORMAT( CURRENT_TIMESTAMP(),'%Y' ) )
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+
+  <select id="getCompleteOrder" resultType="int">
+    SELECT count(*) FROM ld_orderexecution WHERE estimated_time &lt;= NOW() AND state = 0
+  </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from ld_order
     where id = #{id,jdbcType=VARCHAR}
   </delete>
+  <delete id="deleteReservation">
+     delete from ld_reservation
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
 
-  <insert id="insert" parameterType="com.real.cyd.bean.LdOrder" >
+    <insert id="insert" parameterType="com.real.cyd.bean.LdOrder" >
     insert into ld_order (id, client_id, sum, 
       estimated_time, price, create_time
       )
@@ -167,6 +265,9 @@
       <if test="createTime != null" >
         create_time,
       </if>
+      <if test="userId != null" >
+        userName,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -187,10 +288,16 @@
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
+    <insert id="addReservation" parameterType="com.real.cyd.bean.LdOrder">
+      INSERT  INTO ld_reservation(id,client_id,create_time) VALUES (#{id},#{clientId},#{createTime})
+    </insert>
 
-  <update id="updateByExampleSelective" parameterType="map" >
+    <update id="updateByExampleSelective" parameterType="map" >
     update ld_order
     <set >
       <if test="record.id != null" >
@@ -270,4 +377,10 @@
     <update id="updateEmTime" parameterType="com.real.cyd.bean.LdOrder">
       UPDATE ld_order SET estimated_time = #{dateStr} WHERE id = #{id}
     </update>
+  <update id="updateReservationSum" parameterType="com.real.cyd.bean.LdOrderInfo">
+    UPDATE ld_reservation set sum = sum + 1 where id = #{orderId}
+  </update>
+  <update id="updateReservationPrice" parameterType="com.real.cyd.bean.LdOrder">
+    UPDATE ld_reservation set price = price + #{price} where id = #{id}
+  </update>
 </mapper>

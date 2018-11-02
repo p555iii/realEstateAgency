@@ -73,7 +73,7 @@
                         <button class="layui-btn" id="add" function="top">
                             <i class="layui-icon">&#xe654;</i>新增
                         </button>
-                        <button class="layui-btn layui-btn-danger" function="submit" url="/order/delete" isMutiDml="1" isConfirm="1" confirmMsg="是否确定删除选中的数据？" inputs="id:">
+                        <button class="layui-btn layui-btn-danger" function="submit" url="/order/infoDelete" isMutiDml="1" isConfirm="1" confirmMsg="是否确定删除选中的数据？" inputs="infoId,orderId:">
                             <i class="layui-icon">&#xe640;</i>批量删除
                         </button>
                         <button class="layui-btn" function="refresh">
@@ -106,7 +106,7 @@
                         </script>
                         <script type="text/html" id="barDemo">
                             <a class="layui-btn layui-btn-xs" lay-event="top" topUrl="/order/toInfoUpdate" topWidth="800px" topHeight="600px" topTitle="编辑demo" inputs="infoId:">编辑</a>
-                            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="submit" url="/order/delete" isConfirm="1" confirmMsg="是否确定删除当前记录？" inputs="infoId:">删除</a>
+                            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="submit" url="/order/infoDelete" isConfirm="1" confirmMsg="是否确定删除当前记录？" inputs="infoId,orderId:">删除</a>
                             <!--<a class="layui-btn layui-btn-xs" lay-event="test2" >测试</a>-->
                         </script>
                     </div>

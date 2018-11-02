@@ -82,7 +82,14 @@ public class FinRecordedServiceImpl implements FinRecordedService{
         if(ToolsUtils.IsNull(id)){
             return res;
         }
-        finRecordedMapper.deleteByPrimaryKey(id);
+        int result = 0;
+        String[] split = id.split(",");
+        for(String s:split){
+            int i = finRecordedMapper.deleteByPrimaryKey(s);
+            if(i == 0){
+                result++;
+            }
+        }
         return res;
     }
 

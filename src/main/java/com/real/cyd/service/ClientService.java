@@ -15,11 +15,13 @@ import com.real.cyd.resp.RespBeanOneObj;
 public interface ClientService {
     RespBean queryClientList(QueryClientReq req);
 
-    void insertClient(LdClient client);
+    RespBean insertClient(LdClient client);
 
     RespBean deleteClient(String id);
 
     RespBeanOneObj getUserInfo(String id);
 
     void updateClient(LdClient client);
+
+
 }

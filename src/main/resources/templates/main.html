@@ -20,8 +20,39 @@
     <script type="text/javascript" src="/plugins/frame/js/fs.js?v=1.7.1"></script>
     <script type="text/javascript" src="/plugins/frame/js/main.js?v=1.7.1"></script>
     <script type="text/javascript" src="/plugins/echarts/echarts.min.js"></script>
+    <script src="https://cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="https://cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet"></link>
+    <link rel="stylesheet" type="text/css" href="../plugins/layui/css/layui.css" media="all"></link>
+    <link rel="stylesheet" type="text/css" href="../css/fs.css" media="all"></link>
+    <script type="text/javascript" src="plugins/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="plugins/layui/layui.js"></script>
+    <script type="text/javascript" src="plugins/frame/js/fsDict.js?v=1.7.0"></script>
+    <script type="text/javascript" src="plugins/frame/js/fs.js?v=1.7.0"></script>
+    <script type="text/javascript" src="plugins/frame/js/frame.js?v=1.7.0"></script>
 </head>
 <body class="childrenBody">
+<div class="panel_box row">
+    <div class="layui-form-query">
+        <form class="layui-form" action="/main" id="form">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-mid">统计时间：</label>
+                    <div class="layui-input-inline" style="">
+                        <input type="text" name="time" autocomplete="off" class="layui-input fsDate" dateRange="1" placeholder=" - " id="time"/>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-input-inline">
+                        <button class="layui-btn" type="button" id="submit"><i class="layui-icon">&#xe615;</i>查询</button>
+                    </div>
+                </div>
+            </div>
+
+
+        </form>
+    </div>
+
+</div>
 <div class="panel_box row">
     <div class="panel col">
         <a href="javascript:;" data-url="page/message/message.html">
@@ -383,5 +414,11 @@
         ]
     };
     myChart4.setOption(option);
+
+    $("#submit").click(function (){
+        var time = $("#time").val();
+        window.location.href="/main?time="+time;
+
+    })
 </script>
 </html>

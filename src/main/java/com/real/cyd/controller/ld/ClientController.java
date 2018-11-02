@@ -54,9 +54,8 @@ public class ClientController {
     @ExceptionHandler(NumberFormatException.class)
     @ResponseBody
     public RespBean addClient(LdClient client){
-        clientService.insertClient(client);
-        RespBean users = new RespBean();
-        users.setErrorNo("0");
+
+        RespBean users = clientService.insertClient(client);
         return users;
     }
 

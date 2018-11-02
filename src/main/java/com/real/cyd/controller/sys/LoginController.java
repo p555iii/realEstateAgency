@@ -8,6 +8,7 @@ import com.real.cyd.req.QueryUserReq;
 import com.real.cyd.service.SysPermissionService;
 import com.real.cyd.utils.ShiroUtil;
 import com.real.cyd.utils.SpringUtils;
+import com.real.cyd.utils.ToolsUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.UnavailableSecurityManagerException;
@@ -42,6 +43,10 @@ public class LoginController {
     @RequestMapping(value="/login")
     public String loginUser(String username,String password,HttpSession session,HttpServletRequest request,Model model) {
         UsernamePasswordToken usernamePasswordToken=new UsernamePasswordToken(username,password);
+
+        if(ToolsUtils.IsNull(username)&&ToolsUtils.IsNull(password)){
+            return "login";
+        }
         Subject subject = SecurityUtils.getSubject();
         try {
             SysUser me = null;
@@ -59,31 +64,18 @@ public class LoginController {
 
             }
             if(me == null){
+
                 return "login";
             }
             me.setPassword("");
-            /**
-             * 资源和当前选中菜单
-             */
-           /* String res = request.getParameter("p");
-            if (StringUtils.isNotBlank(res)) {
-                session.setAttribute("res", res);
-            }
-            String cur = request.getParameter("t");
-            if (StringUtils.isNotBlank(cur)) {
-                session.setAttribute("cur", cur);
-            }*/
-            /**
-             * 获取当前用户的菜单
-             */
+
 
             List<SysPermissionTree> treeMenus = SpringUtils.getBean(SysPermissionService.class).selectTreeMenuByUserId(me.getId());
-            //System.out.println("-0--------"+treeMenus.get(0).getSysPermission().getUrl());
 
             session.setAttribute("treeMenus", treeMenus);
-            //request.setAttribute("treeMenus", treeMenus);
             return "index";
         } catch(Exception e) {
+            model.addAttribute("msg","用户名或密码错误");
             return "login";//返回登录页面
         }
 

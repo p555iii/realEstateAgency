@@ -54,8 +54,11 @@ public class OrderController {
     @RequestMapping("/add")
     @ExceptionHandler(NumberFormatException.class)
     @ResponseBody
-    public RespBean add(LdOrder bean){
-
+    public RespBean add(LdOrder bean,HttpSession session){
+        SysUser user=(SysUser)session.getAttribute("user");
+        if(user != null && !user.getUsername().equals("")){
+            bean.setUserId(user.getUsername());
+        }
         return orderService.insert(bean);
     }
 
@@ -63,6 +66,12 @@ public class OrderController {
     @ResponseBody
     public RespBean delete(String id){
         return orderService.delete(id);
+    }
+
+    @RequestMapping("/infoDelete")
+    @ResponseBody
+    public RespBean infoDelete(String infoId,String orderId){
+        return orderService.infoDelete(infoId,orderId);
     }
 
     @RequestMapping("/toUpdate")
@@ -150,4 +159,54 @@ public class OrderController {
 
         return orderService.complete(user,order);
     }
+    /**
+     *
+     *
+     *
+     * *****************预定
+     *
+     *
+     */
+    @RequestMapping("/queryReservationList")
+    @RequiresPermissions("reservation:List")//权限管理;
+    public String queryReservationList(){
+
+        return "order/reservationList";
+    }
+    @RequestMapping("/reservationList")
+    @ResponseBody
+    public RespBean reservationList(PageBean page, QueryOrderReq req){
+        PageHelper.startPage(page.getPageNum(),page.getPageSize());
+        PageHelper.orderBy("create_Time DESC");
+        RespBean client =orderService.queryReservationList(req);
+        return client;
+    }
+
+    @RequestMapping("/deleteReservation")
+    @ResponseBody
+    public RespBean deleteReservation(String id){
+        return orderService.deleteReservation(id);
+    }
+
+    @RequestMapping("/toReservationDetails")
+    public String toReservationDetails(){
+        return "order/reservationDetails";
+    }
+
+    @RequestMapping("/reservationDetails")
+    @ResponseBody
+    public RespBean reservationDetails(PageBean page,QueryDetailsReq req){
+        PageHelper.startPage(page.getPageNum(),page.getPageSize());
+        PageHelper.orderBy("create_Time DESC");
+        RespBean details = orderService.reservationDetails(req);
+        return details;
+    }
+
+    @RequestMapping("/toOrder")
+    @ResponseBody
+    public RespBean toOrder(String id,HttpSession session){
+        SysUser user=(SysUser)session.getAttribute("user");
+        return orderService.toOrder(id,user.getUsername());
+    }
+
 }

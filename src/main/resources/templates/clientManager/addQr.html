@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html  xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>客户登记</title>
+    <style type="text/css">
+        *{margin: 0;padding: 0;}
+        body{
+            width: 100%;
+            background: url(./images/mmexport.jpg) 100% 100%;
+            background-attachment: fixed;
+            background-size: cover;
+            background-repeat: no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .content{
+            width: 100%;
+            height: 500px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .middle{
+            width: 250px;
+            height: 500px;
+            background-color: rgba(0,0,0,0.4);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            bottom:10%;
+        }
+
+        .user{
+            margin: 10px auto 0;
+            display: flex;
+            width: 200px;
+            height: 50px;
+            border-bottom: 1px solid rgb(235, 232, 232);
+        }
+        .counser{
+            margin-top: 228px;
+        }
+        .user i{
+            display: block;
+            width: 50px;
+            height: 50px;
+            background-image: url(./images/contacts.png);
+            background-size: cover;
+            border-radius: 5px;
+            background-color: transparent;
+        }
+        .number i{
+            background-image: url(./images/twelvekeydialer.png);
+        }
+        .adress i{
+            background-image: url(./images/maps.png);
+        }
+        .user input{
+            color: #fff;
+            font-size: 18px;
+            width: 144px;
+            height: 30px;
+            background-color: transparent;
+            outline: none;
+            padding-left: 6px;
+            border-radius: 5px;
+            border: none;
+            align-self: center;
+        }
+        .middle button{
+            font-size:16px;
+            color: #fff;
+            margin: 20px 25px;
+            width: 200px;
+            height: 35px;
+            background-color: #FF3366;
+            border: none;
+            border-radius: 20px;
+            outline: none;
+            cursor: pointer;
+        }
+        iframe{
+            position: absolute;
+            top: 0;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+<div class="content">
+    <div class="middle">
+        <iframe src="http://peterned.home.xs4all.nl/demooo/"  frameborder="0" scrolling="auto"  marginwidth="0" marginheight="0" allowtransparency="true" width="100%" height="400px"></iframe>
+        <form action="/addQrs" id="form" method="post">
+            <div class="user counser">
+                <i></i>
+                <input type="text" name="name" placeholder="客户名">
+            </div>
+            <div class="user number">
+                <i></i>
+                <input type="text" name="phone" placeholder="手机号">
+            </div>
+            <div class="user adress">
+                <i></i>
+                <input type="text" name="address" placeholder="住址">
+            </div>
+        </form>
+        <button type="sumbit" id="sub">添加</button>
+    </div>
+</div>
+<script type="text/javascript" src="../plugins/jquery/jquery.min.js"></script>
+<script>
+    $("#sub").click(function(){
+        $("#form").submit();
+    });
+</script>
+</body>
+</html>

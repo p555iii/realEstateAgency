@@ -8,6 +8,7 @@ import com.real.cyd.req.QueryUserReq;
 import com.real.cyd.resp.RespBeanOneObj;
 import com.real.cyd.resp.vo.UserRoleInfoVo;
 import com.real.cyd.service.UserService;
+import com.real.cyd.utils.ToolsUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +20,7 @@ import javax.annotation.Resource;
 
 @Controller
 @RequestMapping("/userManager")
-public class SysUserController {
+public class                SysUserController {
     @Resource
     private UserService userService;
 
@@ -49,9 +50,8 @@ public class SysUserController {
     @ExceptionHandler(NumberFormatException.class)
     @ResponseBody
     public RespBean addUser(SysUser user){
-        userService.insertUser(user);
-        RespBean users = new RespBean();
-        users.setErrorNo("0");
+
+        RespBean users = userService.insertUser(user);
         return users;
     }
 
@@ -74,10 +74,11 @@ public class SysUserController {
     }
     @RequestMapping("/updateUser")
     @ResponseBody
-    public RespBean updateUser(SysUser user){
-        userService.updateUser(user);
-        RespBean users = new RespBean();
-        users.setErrorNo("0");
+    public RespBean updateUser(SysUser user,String passwords){
+        if(!ToolsUtils.IsNull(passwords)){
+            user.setPassword(passwords);
+        }
+        RespBean users =  userService.updateUser(user);
         return users;
     }
 
